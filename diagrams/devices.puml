@@ -1,0 +1,12 @@
+@startuml devices
+cloud server
+actor person1
+actor person2
+card "<&phone>" as phone1
+card "<&phone>" as phone2
+person1 -right- phone1
+person2 -left- phone2
+phone1 <-right-> phone2 : <&bluetooth><&wifi>
+phone1 -up-> server
+phone2 -up-> server
+@enduml
