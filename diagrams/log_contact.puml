@@ -1,0 +1,11 @@
+@startuml log_contact
+actor person1
+actor person2
+
+person1 <-> person2 : detect bluetooth
+person1 -> person2 : send public key
+person2 -> person2 : store timestamp, public key, (location)
+person1 <- person2 : send public key
+person1 -> person1 : store timestamp, public key, (location)
+
+@enduml
