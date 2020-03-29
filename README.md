@@ -62,3 +62,11 @@ Visualizes probability to be infected.
 Charts and diagrams should show when contact to persons
 which are infected now happened.
 Based on the data and own symptoms, probability of illnes can be calculated.
+
+## Fraud
+
+What happenes if people upload information to lead others to believe they are ill, but they are not.
+
+There should be an interface, doctors can sign and validate the users public key to be ill.
+
+![part1](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/chriamue/corona-diary/master/diagrams/validate.puml)

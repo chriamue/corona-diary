@@ -1,0 +1,21 @@
+@startuml validate
+
+actor "ill Person" as Person
+actor "contacted Person" as Person2
+actor Doctor
+
+Person -> Person : gets ill
+Person <-> Person2 : has contact with
+Person <-> Person2 : exchange public keys
+Person -> Doctor : visits
+Doctor -> Person : determines illness
+Doctor -> Government : reports
+Government -> Person : issues credential
+Person -> Server : uploads and signs credential
+Person2 -> Server : checks contact data
+Server -> Person2 : ill Persons credential
+Person2 -> Person2 : validate credential using public key
+rnote over Person2
+ knows maybe had contact to ill person
+endrnote
+@enduml

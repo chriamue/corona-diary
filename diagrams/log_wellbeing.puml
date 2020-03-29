@@ -8,7 +8,7 @@ Alice -> Server : upload state and public key of Bob
 Bob -> Server : authentificate using private key
 Server -> Bob : send information of Alice and others
 rnote over Bob
- "Bob knows someone he had contact with is ill"
+ Bob knows someone he had contact with is ill
 endrnote
 
 @enduml
