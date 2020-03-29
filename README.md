@@ -3,6 +3,8 @@ App to automatically log which people you met to predict i you could have been i
 
 Project status: ideation
 
+[![Build Status](https://travis-ci.org/chriamue/corona-diary.svg?branch=master)](https://travis-ci.org/chriamue/corona-diary)
+
 ## 3 Parts
 
 This project contains of 3 parts.
