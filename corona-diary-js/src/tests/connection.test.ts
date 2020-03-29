@@ -14,5 +14,7 @@ test('accumulate', () => {
 
     expect(connection1.start).toBe(connection3?.start);
     expect(connection2.end).toBe(connection3?.end);
+    expect(connection1.accumulate(
+        connection2, moment.duration(1, 'minutes'))).toBe(null)
 
 })
