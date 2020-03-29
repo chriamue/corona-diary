@@ -4,6 +4,7 @@ App to automatically log which people you met to predict i you could have been i
 Project status: ideation
 
 [![Build Status](https://travis-ci.org/chriamue/corona-diary.svg?branch=master)](https://travis-ci.org/chriamue/corona-diary)
+[![Coverage Status](https://coveralls.io/repos/github/chriamue/corona-diary/badge.svg?branch=master)](https://coveralls.io/github/chriamue/corona-diary?branch=master)
 
 ## 3 Parts
 
