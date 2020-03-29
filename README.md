@@ -38,3 +38,15 @@ In the first part the app has to detect surrounding devices,
 connect to them and share the public key.
 
 ![part1](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/chriamue/corona-diary/master/diagrams/log_contact.puml)
+
+## Part 2
+
+In the second part the user has to log his wellbeing.
+This information can be shared by the user.
+It will be signed by private key, which can be verified by others using the public key.
+The information will be shared using a server.
+Signed information and list of public key, which are users that are allowed to view the information will be uploaded to the server.
+Other users can login to their public key account using their private key.
+Their Apps will download information of all users that shared information with them.
+
+![part1](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/chriamue/corona-diary/master/diagrams/log_wellbeing.puml)
