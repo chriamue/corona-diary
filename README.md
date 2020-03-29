@@ -39,6 +39,11 @@ connect to them and share the public key.
 
 ![part1](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/chriamue/corona-diary/master/diagrams/log_contact.puml)
 
+Both users have the public key of the other user in their own app now.
+They know now when, (and if they also logged the location, where) they
+had contact to the other user.
+Information about who the other user is not inteded to be saved, they are pseudonym.
+
 ## Part 2
 
 In the second part the user has to log his wellbeing.
@@ -50,3 +55,10 @@ Other users can login to their public key account using their private key.
 Their Apps will download information of all users that shared information with them.
 
 ![part1](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/chriamue/corona-diary/master/diagrams/log_wellbeing.puml)
+
+## Part 3
+
+Visualizes probability to be infected.
+Charts and diagrams should show when contact to persons
+which are infected now happened.
+Based on the data and own symptoms, probability of illnes can be calculated.
