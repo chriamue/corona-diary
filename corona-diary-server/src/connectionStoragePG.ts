@@ -34,7 +34,7 @@ export class ConnectionStoragePG implements ConnectionStorage {
 
     async addConnection(publicKey: string, data: any, signature: string) {
         const queryText = 'INSERT INTO connections(pubkey, data, signature, timestamp) VALUES($1, $2, $3, $4) RETURNING *'
-        const values = [publicKey, data, signature, Date.now()]
+        const values = [publicKey, data, signature, new Date()]
 
         return this.client.query(queryText, values, (err, res) => {
             if (err) {

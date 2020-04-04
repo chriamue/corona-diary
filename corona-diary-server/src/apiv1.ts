@@ -23,6 +23,19 @@ router.get('/authentificate/:pubKey/:timestamp/:signature', (req, res) => {
     }
 });
 
+router.post('/connection/:pubKey/:timestamp/:signature', async (req, res) => {
+    const pubKey = Base64.decode(req.params.pubKey);
+    const timestamp = Base64.decode(req.params.timestamp);
+    const auth_signature = Base64.decode(req.params.signature);
+    if (authentificate(pubKey, timestamp, auth_signature)) {
+        const { data, signature } = req.body;
+        await storage.addConnection(pubKey, data, signature);
+        res.send();
+    } else {
+        res.status(401).send();
+    }
+});
+
 router.get('/info', async (req, res) => {
     const connected = await storage.connected();
     res.send({ 'database_connected': connected });
