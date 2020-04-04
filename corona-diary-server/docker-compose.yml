@@ -1,0 +1,10 @@
+version: "3"
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      PORT: ${PORT}
+    ports:
+      - ${PORT}:${PORT}
