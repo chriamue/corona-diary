@@ -28,9 +28,23 @@ router.post('/connection/:pubKey/:timestamp/:signature', async (req, res) => {
     const timestamp = Base64.decode(req.params.timestamp);
     const auth_signature = Base64.decode(req.params.signature);
     if (authentificate(pubKey, timestamp, auth_signature)) {
-        const { data, signature } = req.body;
-        await storage.addConnection(pubKey, data, signature);
+        const { pubkey, data, signature } = req.body;
+        console.log('equals ', pubKey, pubkey, pubKey == pubkey);
+        await storage.addConnection(pubkey, data, signature);
         res.send();
+    } else {
+        res.status(401).send();
+    }
+});
+
+router.get('/connections/:pubKey/:timestamp/:signature', async (req, res) => {
+    const pubKey = Base64.decode(req.params.pubKey);
+    const timestamp = Base64.decode(req.params.timestamp);
+    const auth_signature = Base64.decode(req.params.signature);
+    if (authentificate(pubKey, timestamp, auth_signature)) {
+        const connections = await storage.getConnections(pubKey);
+        console.log(connections);
+        res.json(connections);
     } else {
         res.status(401).send();
     }

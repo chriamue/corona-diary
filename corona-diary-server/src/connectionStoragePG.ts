@@ -1,5 +1,6 @@
 import { Client } from 'pg';
 import { ConnectionStorage } from 'corona-diary';
+import md5 from 'md5';
 
 export class ConnectionStoragePG implements ConnectionStorage {
 
@@ -23,7 +24,7 @@ export class ConnectionStoragePG implements ConnectionStorage {
         const queryText =
             `CREATE TABLE IF NOT EXISTS
             connections(
-                pubkey TEXT NOT NULL,
+                pubkey VARCHAR(32) NOT NULL,
                 data TEXT NOT NULL,
                 signature TEXT NOT NULL,
                 timestamp TIMESTAMP,
@@ -33,8 +34,9 @@ export class ConnectionStoragePG implements ConnectionStorage {
     }
 
     async addConnection(publicKey: string, data: any, signature: string) {
+        console.log(md5(publicKey))
         const queryText = 'INSERT INTO connections(pubkey, data, signature, timestamp) VALUES($1, $2, $3, $4) RETURNING *'
-        const values = [publicKey, data, signature, new Date()]
+        const values = [md5(publicKey), data, signature, new Date()]
 
         return this.client.query(queryText, values, (err, res) => {
             if (err) {
@@ -45,12 +47,16 @@ export class ConnectionStoragePG implements ConnectionStorage {
         })
     }
     async getConnections(publicKey: string) {
-        const connections = [];
-        for (const connection of this.connections) {
-            if (connection.publicKey == publicKey) {
-                connections.push(connection)
+        const queryText = 'SELECT * FROM connections where pubkey = $1';
+        const values = [md5(publicKey)];
+
+        const connections: any[] = [];
+        await this.client.query(queryText, values).then((res) => {
+            console.log(res.rows);
+            for (const row of res.rows) {
+                connections.push(row);
             }
-        }
+        })
         return connections;
     }
 
