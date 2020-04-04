@@ -3,7 +3,7 @@ import { Wallet } from '../wallet';
 test('sing', async () => {
 
     const aliceWallet = new Wallet();
-    const bobWallet = new Wallet()
+    const bobWallet = new Wallet();
 
     await aliceWallet.generate();
     await bobWallet.generate();
@@ -23,7 +23,7 @@ test('sing', async () => {
 
 test('encrypt', async() =>{
     const aliceWallet = new Wallet();
-    const bobWallet = new Wallet()
+    const bobWallet = new Wallet();
 
     aliceWallet.generate();
     bobWallet.generate();

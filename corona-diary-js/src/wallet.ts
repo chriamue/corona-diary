@@ -25,7 +25,7 @@ export class Wallet {
     }
 
     async sign(data: any) {
-        return this.key.sign(data);
+        return this.key.sign(data, 'base64');
     }
 
     async verify(data: any, signature: any) {
