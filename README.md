@@ -73,3 +73,26 @@ What happenes if people upload information to lead others to believe they are il
 There should be an interface, doctors can sign and validate the users public key to be ill.
 
 ![part1](http://www.plantuml.com/plantuml/proxy?src=https://raw.github.com/chriamue/corona-diary/master/diagrams/validate.puml)
+
+## Technology Stack
+
+Following some devices, technology, services and APIs that could be usefull.
+
+### Devices
+
+On the client side, the app should run on mobile phones.
+The server part could run on any container based cloud instance.
+
+### Peer 2 Peer
+
+Devices should find each other using mainly bluetooth.
+Ultrasonic, based on the phones speaker and microphone
+could also be implemented.
+
+### APIs
+
+To make connections to nearby devices [Connections API](https://developers.google.com/nearby/connections/overview) can be used.
+
+## Related Projects
+
+[Pan-European Privacy-Preserving Proximity Tracing](https://www.pepp-pt.org/)
