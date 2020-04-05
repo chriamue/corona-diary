@@ -43,7 +43,7 @@ export class Wallet {
     }
 
     getPrivateKey() {
-        return this.privateKey;
+        return this.privateKey.toString();
     }
 
 }

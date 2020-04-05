@@ -1,4 +1,5 @@
 import React from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Wallet } from '../Wallet';
 import { Text } from 'react-native';
 import { Icon, Button, ThemeProvider } from 'react-native-elements';
@@ -19,9 +20,35 @@ export default class Keys extends React.Component<Props, State> {
         };
     }
 
+    componentDidMount() {
+        this.loadWallet();
+    }
+
+    async loadWallet() {
+
+        try {
+            const privkey = await AsyncStorage.getItem('@privkey')
+            const pubkey = await AsyncStorage.getItem('@pubkey')
+            if (privkey !== null && pubkey != null) {
+                const wallet = new Wallet();
+                wallet.privateKey = privkey;
+                wallet.publicKey = pubkey;
+                this.setState({ wallet });
+            }
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     async generateWallet() {
         const wallet = new Wallet();
         await wallet.generate();
+        try {
+            await AsyncStorage.setItem('@privkey', wallet.getPrivateKey())
+            await AsyncStorage.setItem('@pubkey', wallet.getPublicKey())
+        } catch (e) {
+            console.log(e);
+        }
         this.setState({ wallet });
     }
 
