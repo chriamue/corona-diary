@@ -19,9 +19,6 @@ test('authentification', async () => {
     const timestampB64 = Base64.encode(timestamp);
     const signatureB64 = Base64.encode(signature);
 
-
-    console.log(alicePubKeyB64, timestampB64, signatureB64)
-
     await axios.get(`http://localhost:${PORT}/api/v1/authentificate/${alicePubKeyB64}/${timestampB64}/${signatureB64}`)
         .then(res => console.log(res.data));
 })
@@ -48,9 +45,6 @@ test('post connection', async () => {
 
     const message = 'infected';
 
-
-    console.log(alicePubKeyB64, timestampB64, signatureB64)
-
     const data = await bobWalletAtAlice.encrypt({
         message,
         pubkey: alicePubKey
@@ -63,8 +57,6 @@ test('post connection', async () => {
         data,
         signature
     }
-
-    console.log(body)
 
     await axios.post(`http://localhost:${PORT}/api/v1/connection/${alicePubKeyB64}/${timestampB64}/${signatureB64}`,
         body)
@@ -107,12 +99,21 @@ test('get connections', async () => {
     const body = {
         pubkey: bobPubKey,
         data,
-        signature
+        signature,
+        timestamp
     }
+
+    console.log(alicePubKeyB64)
+    console.log(timestampB64)
+    console.log(aliceSignatureB64)
+
+    console.log(JSON.stringify(body))
 
     await axios.post(`http://localhost:${PORT}/api/v1/connection/${alicePubKeyB64}/${timestampB64}/${aliceSignatureB64}`,
         body)
         .then(res => console.log(res.data));
+
+        console.log(bobPubKeyB64,timestampB64,bobSignatureB64)
 
     await axios.get(`http://localhost:${PORT}/api/v1/connections/${bobPubKeyB64}/${timestampB64}/${bobSignatureB64}`)
         .then(res => console.log(res.data));
