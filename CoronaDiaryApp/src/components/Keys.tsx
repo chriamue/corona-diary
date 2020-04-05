@@ -1,3 +1,4 @@
+import { Base64 } from 'js-base64';
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Wallet } from '../Wallet';
@@ -52,6 +53,25 @@ export default class Keys extends React.Component<Props, State> {
         this.setState({ wallet });
     }
 
+
+    async testLogin() {
+        const { wallet } = this.state;
+        if (!wallet) {
+            return;
+        }
+        const timestamp = Date.now().toString();
+
+        const pubKey = wallet.getPublicKey();
+        const signature = await wallet.sign(`${pubKey}${timestamp}`)
+
+        const pubKeyB64 = Base64.encode(pubKey);
+        const timestampB64 = Base64.encode(timestamp);
+        const signatureB64 = Base64.encode(signature);
+
+        fetch(`http://dev.chriamue.de/api/v1/authentificate/${pubKeyB64}/${timestampB64}/${signatureB64}`)
+            .then(res => console.log(res));
+    }
+
     render() {
         const { expand, wallet } = this.state;
         if (!wallet) {
@@ -64,6 +84,7 @@ export default class Keys extends React.Component<Props, State> {
                 {wallet.getPublicKey()}
             </Text>
                 <Icon name='vpn-key' onPress={() => this.setState({ expand: false })} />
+                <Button title='test login' onPress={() => this.testLogin()} />
             </>;
         }
         console.log(wallet.getPublicKey())
