@@ -41,11 +41,3 @@ export class Wallet {
     }
 
 }
-
-export async function getWallet(native: boolean = false) {
-    if (native) {
-        const NativeWallet = await import('./nativeWallet');
-        return NativeWallet.Wallet;
-    }
-    return Wallet;
-}
