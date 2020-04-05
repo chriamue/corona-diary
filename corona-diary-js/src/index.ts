@@ -1,3 +1,3 @@
 export { Connection } from './connection';
 export { ConnectionStorage } from './storage/connectionStorage';
-export { Wallet } from './wallet';
+export { getWallet, Wallet } from './wallet';
