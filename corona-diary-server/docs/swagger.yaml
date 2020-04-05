@@ -1,0 +1,209 @@
+swagger: "2.0"
+info:
+  description: "This is a sample server Petstore server.  You can find out more about     Swagger at [http://swagger.io](http://swagger.io) or on [irc.freenode.net, #swagger](http://swagger.io/irc/).      For this sample, you can use the api key `special-key` to test the authorization     filters."
+  version: "1.0.0"
+  title: "Swagger Petstore"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "apiteam@swagger.io"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8888"
+basePath: "/"
+tags:
+- name: "auth"
+  description: "Authentication mechanism"
+- name: "connections"
+  description: "Connections data"
+schemes:
+- "https"
+- "http"
+paths:
+  /api/v1/authentificate/{pubkey}/{timestamp}/{signature}:
+    get:
+      tags:
+      - "auth"
+      summary: "test authentification"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "authentificate"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "pubkey"
+        in: "path"
+        schema:
+          example: "LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JR0pBb0dCQUpIdzJ2WkRGS25wckptQzdsZDFMWENxZVNaaVhuSWhXanBpNVBOU2FRWTFPR2ErTUtFYlNmaFkKWlJmTFRoemcrUm1CN2N4WHA1TkcyWXNJZzg5YzNYWGkyQ3VxMDN1TkEwb0NBcHNxRThtUTkzakZTTDB1M2NRZwozZFNnZTByMmhSY3pWbHAySlIySG9hNGVUQnk1dEZWWDN2T2w1Uy9xM0FPZmxUVEJjdFdIQWdNQkFBRT0KLS0tLS1FTkQgUlNBIFBVQkxJQyBLRVktLS0tLQ=="
+        description: "public key of actor"
+        required: true
+        type: "string"
+      - name: "timestamp"
+        in: "path"
+        description: "Current timestamp. Not older than a minute."
+        required: true
+        schema:
+          example: "MTU4NjA5NTU5MjcwMg=="
+          type: "string"
+      - name: "signature"
+        in: "path"
+        description: "Signed string of pubkey+timestamp."
+        required: true
+        schema:
+          example: "SGF5WTg1eDc3ZTBnK1MvYXN5aERPVnBpcnJyYzJPY3EvSEdpNDJFTmhwS0JBZmMxeURxWWRYcXBjd2hidFRMRnF4OEl6dDh6RHNKTUZ6Y3ZTSDhRdTQzRkM3ZFRHaWt0VGRQMUxTTWNtM2t0R3dnVUxBZFZsd2dUeEpPZU12T1lZQUxRT2pTRXo5VFpJRlUvRFcvbXpsQVdyc3o2dVUvM1ZuS1RaUG1iaGo4PQ=="
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid status value"
+        
+  /api/v1/connections/{pubkey}/{timestamp}/{signature}:
+    get:
+      tags:
+      - "connections"
+      summary: "Finds Pets by tags"
+      description: "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing."
+      operationId: "connections"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "pubkey"
+        in: "path"
+        schema:
+          example: "LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JR0pBb0dCQUpIdzJ2WkRGS25wckptQzdsZDFMWENxZVNaaVhuSWhXanBpNVBOU2FRWTFPR2ErTUtFYlNmaFkKWlJmTFRoemcrUm1CN2N4WHA1TkcyWXNJZzg5YzNYWGkyQ3VxMDN1TkEwb0NBcHNxRThtUTkzakZTTDB1M2NRZwozZFNnZTByMmhSY3pWbHAySlIySG9hNGVUQnk1dEZWWDN2T2w1Uy9xM0FPZmxUVEJjdFdIQWdNQkFBRT0KLS0tLS1FTkQgUlNBIFBVQkxJQyBLRVktLS0tLQ=="
+        description: "public key of actor"
+        required: true
+        type: "string"
+      - name: "timestamp"
+        in: "path"
+        description: "Current timestamp. Not older than a minute."
+        required: true
+        schema:
+          example: "MTU4NjA5NTU5MjcwMg=="
+          type: "string"
+      - name: "signature"
+        in: "path"
+        description: "Signed string of pubkey+timestamp."
+        required: true
+        schema:
+          example: "SGF5WTg1eDc3ZTBnK1MvYXN5aERPVnBpcnJyYzJPY3EvSEdpNDJFTmhwS0JBZmMxeURxWWRYcXBjd2hidFRMRnF4OEl6dDh6RHNKTUZ6Y3ZTSDhRdTQzRkM3ZFRHaWt0VGRQMUxTTWNtM2t0R3dnVUxBZFZsd2dUeEpPZU12T1lZQUxRT2pTRXo5VFpJRlUvRFcvbXpsQVdyc3o2dVUvM1ZuS1RaUG1iaGo4PQ=="
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Connection"
+            example:
+            - pubkey: cfb25cb29598a7f24e2dab31b24134dc
+              data: RYANrNyS2V2pqInURZCnTLQeNZBoWaOAdQ5833QzDW6551cwiddVInJUfwqWZKea+mZpT7oCIiAJMoukJPJMPh2d5fazGKxh1ygyMD2sJp6O7gm7GYKNf9xdOJZwjK1DaqWbRZkfHpA6CiJNgcKNPEFEQZ3Nh6Py4VxjLjSvoJxa87L1oIBaRlghvsTk/nc9FjEHVpfkALN5VxbNKCW6lFJULOjDuEfr+KDww636zIkwkrEQ18qWrXRBVTUlxeAEhAI6jwQixWFuwEd2YzBpa6XxQ3bUAqfAFSvWrNEZz/lP6z4D3Rx7dTAjBgIwjaKWXB8IAlgRQrL48ZtKWoxV80lVJI2hSN02YJQMvxbSzdS0KqVPSSn+iSB4G+26yeUvzmN0QFop3N+9icNB8zkLWFCmNiNl9+aKkj0FZucmJBB2b5V66R68dyUxOTnFmdkqJI0DE7JZYjc74gaAxx5srck0eTJnnYbgMuTrsiugds4QYcQKkQe+FZBNlc28VDomHqxOlyYxEUHBshbVxhSicVAkqrZQZSM4p4zZ2HBCa3mU9PTbTxrtf3Tw9H/lieFRZ07no2K3Wrw2NtcL2dPB8CL1MIv7eJIpV+jyI3PL68NUbpo1ds5Hu01ibKofjR002PDZ7dRbpCXSKFwCDti0xisBgCUBw8ZRG5PDgZcKA1M=
+              signature: ecv8i5N0Rp98yeoFJps+Y4gdMD9Jq/5g33TSY6cMV/ItVt6PMeiBgJAq0YIQPlQhHxrcHfvvO63Xq+NV1pNX7LZ5HaA2KREkVzWR4+IPG9k9W0I5YEr+yBCTuKdA4+DnK3Vde7qOSgFkLEVdmsQgkKyM3PcRm1SgIlwm58g09/o=
+              timestamp: '2020-04-05T14:06:32.709Z'
+              
+        400:
+          description: "Invalid tag value"
+          
+  /api/v1/connection/{pubkey}/{timestamp}/{signature}:
+    post:
+      tags:
+      - "connections"
+      summary: "posts a connection"
+      description: "Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing."
+      operationId: "connection"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "pubkey"
+        in: "path"
+        schema:
+          example: "LS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tCk1JR0pBb0dCQUxCejZZblBaeUF1WWlRWnpSUUpseGdzNHB5VW5mUUl0Q2RCRm1PUWFWR0ppNHdmUFVRMXUxYVQKZ1dqR21YVmRnK2FwNDgzaGpQenNwb25OQ282NWs5a2dTemVDSE96cGNXR2RFdklhdXVKTnFpckVDcEljbTU0RAptdXMvMy9qektPR1hNQ29hOU5yTHYyRkRpZlFkZWlBcFpESmtxRytPNGQzUmxBYlFvZktEQWdNQkFBRT0KLS0tLS1FTkQgUlNBIFBVQkxJQyBLRVktLS0tLQ=="
+        description: "public key of actor"
+        required: true
+        type: "string"
+      - name: "timestamp"
+        in: "path"
+        description: "Current timestamp. Not older than a minute."
+        required: true
+        schema:
+          example: "MTU4NjA5NTU5MjcwMg=="
+          type: "string"
+      - name: "signature"
+        in: "path"
+        description: "Signed string of pubkey+timestamp."
+        required: true
+        schema:
+          example: "SUs2aW1teTU2Z2hZM2hzUkhyUmRPMUZ1RTZ2M2RRcUNpN25LZTMvZGpjZFhKWGxPSXBoNVQ2WGhkbXVqOEE1TnAzWVdHc3drQWpvUHlMWm0rL0ZsZzdscHFkOEhKckhqdXpzamk0UkIrWHBydGV1UHVYekhnbWk2bVNlajhKMURNR2wwb3YvaEo3NENhcXluTEVUd21LWEpPR3VubzZnZFJUZVMzeGx4YXdnPQ=="
+          type: "string"
+      - in: "body"
+        name: "body"
+        description: "Created user object"
+        required: true
+        schema:
+          type: "object"
+          example:
+            pubkey: |-
+              -----BEGIN RSA PUBLIC KEY-----
+              MIGJAoGBAJHw2vZDFKnprJmC7ld1LXCqeSZiXnIhWjpi5PNSaQY1OGa+MKEbSfhY
+              ZRfLThzg+RmB7cxXp5NG2YsIg89c3XXi2Cuq03uNA0oCApsqE8mQ93jFSL0u3cQg
+              3dSge0r2hRczVlp2JR2Hoa4eTBy5tFVX3vOl5S/q3AOflTTBctWHAgMBAAE=
+              -----END RSA PUBLIC KEY-----
+            data: RYANrNyS2V2pqInURZCnTLQeNZBoWaOAdQ5833QzDW6551cwiddVInJUfwqWZKea+mZpT7oCIiAJMoukJPJMPh2d5fazGKxh1ygyMD2sJp6O7gm7GYKNf9xdOJZwjK1DaqWbRZkfHpA6CiJNgcKNPEFEQZ3Nh6Py4VxjLjSvoJxa87L1oIBaRlghvsTk/nc9FjEHVpfkALN5VxbNKCW6lFJULOjDuEfr+KDww636zIkwkrEQ18qWrXRBVTUlxeAEhAI6jwQixWFuwEd2YzBpa6XxQ3bUAqfAFSvWrNEZz/lP6z4D3Rx7dTAjBgIwjaKWXB8IAlgRQrL48ZtKWoxV80lVJI2hSN02YJQMvxbSzdS0KqVPSSn+iSB4G+26yeUvzmN0QFop3N+9icNB8zkLWFCmNiNl9+aKkj0FZucmJBB2b5V66R68dyUxOTnFmdkqJI0DE7JZYjc74gaAxx5srck0eTJnnYbgMuTrsiugds4QYcQKkQe+FZBNlc28VDomHqxOlyYxEUHBshbVxhSicVAkqrZQZSM4p4zZ2HBCa3mU9PTbTxrtf3Tw9H/lieFRZ07no2K3Wrw2NtcL2dPB8CL1MIv7eJIpV+jyI3PL68NUbpo1ds5Hu01ibKofjR002PDZ7dRbpCXSKFwCDti0xisBgCUBw8ZRG5PDgZcKA1M=
+            signature: ecv8i5N0Rp98yeoFJps+Y4gdMD9Jq/5g33TSY6cMV/ItVt6PMeiBgJAq0YIQPlQhHxrcHfvvO63Xq+NV1pNX7LZ5HaA2KREkVzWR4+IPG9k9W0I5YEr+yBCTuKdA4+DnK3Vde7qOSgFkLEVdmsQgkKyM3PcRm1SgIlwm58g09/o=
+            timestamp: '1586095592702'
+            
+
+      responses:
+        200:
+          description: "successful operation"
+        400:
+          description: "Invalid tag value"
+definitions:
+  Connection:
+    type: "object"
+    properties:
+      pubkey:
+        type: "string"
+      data:
+        type: "string"
+      signature:
+        type: "string"
+      timestamp:
+        type: "string"
+        format: "date-time"
+    xml:
+      name: "Connection"
+  Category:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+    xml:
+      name: "Category"
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      firstName:
+        type: "string"
+      lastName:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      phone:
+        type: "string"
+      userStatus:
+        type: "integer"
+        format: "int32"
+        description: "User Status"
+    xml:
+      name: "User"
