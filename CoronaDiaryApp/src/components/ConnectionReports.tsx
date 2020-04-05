@@ -9,16 +9,16 @@ import { Icon, Button, ThemeProvider } from 'react-native-elements';
 interface Props { }
 interface State {
     wallet: Wallet | null,
-    expand: boolean
+    connections: any[]
 }
 
-export default class Keys extends React.Component<Props, State> {
+export default class ConnectionReports extends React.Component<Props, State> {
 
     constructor(props: any) {
         super(props);
         this.state = {
             wallet: null,
-            expand: false
+            connections: []
         };
     }
 
@@ -42,20 +42,8 @@ export default class Keys extends React.Component<Props, State> {
         }
     }
 
-    async generateWallet() {
-        const wallet = new Wallet();
-        await wallet.generate();
-        try {
-            await AsyncStorage.setItem('@privkey', wallet.getPrivateKey())
-            await AsyncStorage.setItem('@pubkey', wallet.getPublicKey())
-        } catch (e) {
-            console.log(e);
-        }
-        this.setState({ wallet });
-    }
 
-
-    async testLogin() {
+    async loadConnections() {
         const { wallet } = this.state;
         if (!wallet) {
             return;
@@ -69,27 +57,40 @@ export default class Keys extends React.Component<Props, State> {
         const timestampB64 = Base64.encode(timestamp);
         const signatureB64 = Base64.encode(signature);
 
-        fetch(`http://dev.chriamue.de/api/v1/authentificate/${pubKeyB64}/${timestampB64}/${signatureB64}`)
-            .then(res => console.log(res));
+        fetch(`https://dev.chriamue.de/api/v1/connections/${pubKeyB64}/${timestampB64}/${signatureB64}`)
+            .then(res => res.json()).then(async (body) => {
+                const connections: any[] = []
+                for(const connection of body){
+                    console.log(connection.data)
+                    const data = await wallet.decrypt(connection.data).catch((e) => console.log(e));
+                    const timestamp = connection.timestamp;
+                    const message = 'm'//JSON.parse(data).message;
+                    connections.push({
+                        timestamp,
+                        message
+                    })
+                }
+                this.setState({ connections })
+            });
+    }
+
+    renderConnection(connection: any, index: number) {
+        const { wallet } = this.state;
+        if (!wallet) {
+            return;
+        }
+        return <Text key={index}>{connection.timestamp}</Text>
     }
 
     render() {
-        const { expand, wallet } = this.state;
+        const { connections, wallet } = this.state;
         if (!wallet) {
-            return (<>
-                <Button title='Generate Identity' onPress={() => this.generateWallet()} />
-            </>)
+            return null;
         }
-        if (expand) {
-            return <><Text onLongPress={() => Clipboard.setString(wallet.getPublicKey())}>
-                {wallet.getPublicKey()}
-            </Text>
-                <Icon name='vpn-key' onPress={() => this.setState({ expand: false })} />
-                <Button title='test login' onPress={() => this.testLogin()} />
-            </>;
-        }
-        console.log(wallet.getPublicKey())
-        return (<Icon
-            name='vpn-key' onPress={() => this.setState({ expand: true })} />)
+
+        return (<>
+            <Button title='load Connections' onPress={() => this.loadConnections()} />
+            {connections.map((connection, index) => { return this.renderConnection(connection, index) })}
+        </>)
     }
 }
