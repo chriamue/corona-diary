@@ -1,0 +1,12 @@
+@startuml validate
+
+actor "contacted Person" as Person2
+actor "ill Person" as Person
+actor Doctor
+actor "Health Office" as Government
+
+Person <-> Doctor : diagnoses Person with Corona
+Doctor -> Government : reports
+Government -> Person : issues credential
+Person --> Person2 : presents Proof
+@enduml
