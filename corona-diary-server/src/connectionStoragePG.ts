@@ -1,5 +1,5 @@
 import { Client } from 'pg';
-import { ConnectionStorage } from 'corona-diary';
+import { ConnectionStorage, Wallet } from 'corona-diary';
 import md5 from 'md5';
 
 export class ConnectionStoragePG implements ConnectionStorage {
@@ -34,9 +34,13 @@ export class ConnectionStoragePG implements ConnectionStorage {
     }
 
     async addConnection(publicKey: string, data: any, signature: string) {
-        console.log(md5(publicKey))
+        const wallet = new Wallet();
+        wallet.import(publicKey);
+        const pubkey = wallet.getPublicKey();
+        
+        console.log(md5(pubkey))
         const queryText = 'INSERT INTO connections(pubkey, data, signature, timestamp) VALUES($1, $2, $3, $4) RETURNING *'
-        const values = [md5(publicKey), data, signature, new Date()]
+        const values = [md5(pubkey), data, signature, new Date()]
 
         return this.client.query(queryText, values, (err, res) => {
             if (err) {
@@ -47,8 +51,12 @@ export class ConnectionStoragePG implements ConnectionStorage {
         })
     }
     async getConnections(publicKey: string) {
+        const wallet = new Wallet();
+        wallet.import(publicKey);
+        const pubkey = wallet.getPublicKey();
+
         const queryText = 'SELECT * FROM connections where pubkey = $1';
-        const values = [md5(publicKey)];
+        const values = [md5(pubkey)];
 
         const connections: any[] = [];
         await this.client.query(queryText, values).then((res) => {

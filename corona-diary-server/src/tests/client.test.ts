@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import axios from "axios";
+import md5 from 'md5';
 import { Base64 } from 'js-base64';
 import { Wallet } from 'corona-diary';
 
@@ -31,7 +32,12 @@ test('post connection', async () => {
     await bobWallet.generate();
 
     const alicePubKey = aliceWallet.getPublicKey();
-    const bobPubKey = bobWallet.getPublicKey();
+    const bobPubKey ='-----BEGIN RSA PUBLIC KEY-----\
+    MIGJAoGBAO5Cqqdmj8XOqbg+ZoeawLClfIaaZt+CMqGCHY+RkqSOHJrr2skFryVZ\
+    qjSPDuaPW9i+sxbF+Wg//jt9J5JWwHTN6tF7jYCirDejyp1RPkNVllAUA0A1JFPg\
+    8dTC+sOgeLp8nwUO1UunvWwCUgOtokrJbtLWACefN7nT1s4g/u/lAgMBAAE=\
+    -----END RSA PUBLIC KEY-----\
+    ' //bobWallet.getPublicKey();
 
     const bobWalletAtAlice = new Wallet();
     bobWalletAtAlice.import(bobPubKey);
@@ -43,12 +49,14 @@ test('post connection', async () => {
     const timestampB64 = Base64.encode(timestamp);
     const signatureB64 = Base64.encode(auth_signature);
 
-    const message = 'infected';
+    const message = 'INFECTED';
 
     const data = await bobWalletAtAlice.encrypt({
         message,
-        pubkey: alicePubKey
+        pubkey: md5(alicePubKey)
     })
+
+    console.log('####', data)
 
     const signature = await aliceWallet.sign(data)
 
@@ -91,7 +99,7 @@ test('get connections', async () => {
 
     const data = await bobWalletAtAlice.encrypt({
         message,
-        pubkey: alicePubKey
+        pubkey: md5(alicePubKey)
     })
 
     const signature = await aliceWallet.sign(data)
@@ -116,5 +124,14 @@ test('get connections', async () => {
         console.log(bobPubKeyB64,timestampB64,bobSignatureB64)
 
     await axios.get(`http://localhost:${PORT}/api/v1/connections/${bobPubKeyB64}/${timestampB64}/${bobSignatureB64}`)
-        .then(res => console.log(res.data));
+        .then(async (res) => {
+            const connections = res.data;
+            for(const connection of connections){
+                console.log(connection)
+                const data = JSON.parse(await bobWallet.decrypt(connection.data))
+                const pubkey = data.pubkey
+                expect(pubkey).toEqual(md5(alicePubKey))
+                console.log(data)
+            }
+        });
 })
