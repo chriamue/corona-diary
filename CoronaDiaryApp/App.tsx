@@ -19,11 +19,7 @@ import {
 } from 'react-native';
 
 import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
+  Colors
 } from 'react-native/Libraries/NewAppScreen';
 import Keys from './src/components/Keys';
 import ConnectionReports from './src/components/ConnectionReports';
@@ -39,7 +35,7 @@ const App = () => {
         <ScrollView
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
-          <Header />
+          <Text>Corona Diary</Text>
           <View style={styles.body}>
             <Keys />
           </View>

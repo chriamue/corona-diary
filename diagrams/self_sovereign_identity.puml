@@ -1,4 +1,4 @@
-@startuml validate
+@startuml self_sovereign_identity
 
 actor "contacted Person" as Person2
 actor "ill Person" as Person
