@@ -66,4 +66,22 @@ only the owner of the public key can download data directed to him.
     });
   ```
 
+## Fraud
 
+### Man-in-the-middle Attack
+
+If the server is compromised or the database is leaked, only the public key of
+the persons an ill person sent data to is visible.
+The public key of the ill person is encrypted.
+To prevent to know the person really had contact to an ill person,
+the person could generate randomly public keys and make noise by sending
+dummy data to his own public key.
+
+### Replay Attack
+
+Is it possible for Marvin to record data sent by Alice to Bob and send the same message again to Carol?
+Is it possible for Marvin to replace the public key of Bob with the public key of Carol?
+
+No. The signature is generated using the private key of Alice. The signature is made for
+the data and the public key of Bob. If the public key of Bob is replaced, the signature
+has to be replaced too. It is not possible for Marvin to create a signature as Alice.
