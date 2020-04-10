@@ -27,6 +27,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Keys from './src/components/Keys';
 import ConnectionReports from './src/components/ConnectionReports';
+import ReportConnections from './src/components/ReportConnections';
 
 declare var global: { HermesInternal: null | {} };
 
@@ -46,6 +47,7 @@ const App = () => {
             <View style={styles.sectionContainer}>
               <Text style={styles.sectionTitle}>Connections</Text>
               <ConnectionReports />
+              <ReportConnections />
             </View>
           </View>
         </ScrollView>

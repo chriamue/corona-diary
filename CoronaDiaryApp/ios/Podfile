@@ -54,6 +54,10 @@ target 'CoronaDiaryApp' do
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
 
+  pod 'react-native-randombytes', :path => '../node_modules/react-native-randombytes'
+
+  pod 'react-native-rsa-native', :path => '../node_modules/react-native-rsa-native'
+
   target 'CoronaDiaryAppTests' do
     inherit! :complete
     # Pods for testing

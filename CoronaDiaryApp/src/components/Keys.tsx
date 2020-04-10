@@ -70,7 +70,7 @@ export default class Keys extends React.Component<Props, State> {
         const signatureB64 = Base64.encode(signature);
 
         fetch(`http://dev.chriamue.de/api/v1/authentificate/${pubKeyB64}/${timestampB64}/${signatureB64}`)
-            .then(res => console.log(res));
+            .then(res => res.json()).then(data => console.log(data));
     }
 
     render() {
@@ -86,6 +86,7 @@ export default class Keys extends React.Component<Props, State> {
             </Text>
                 <Icon name='vpn-key' onPress={() => this.setState({ expand: false })} />
                 <Button title='test login' onPress={() => this.testLogin()} />
+                <Button title='generate key' onPress={() => this.generateWallet()} />
             </>;
         }
         console.log(wallet.getPublicKey())

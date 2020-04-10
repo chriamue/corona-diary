@@ -1,4 +1,4 @@
-//import RSA from 'node-rsa';
+import { Base64 } from 'js-base64';
 import { RSA } from 'react-native-rsa-native';
 
 export class Wallet {
@@ -23,11 +23,15 @@ export class Wallet {
     }
 
     async encrypt(data: any) {
-        return RSA.encrypt(data, this.publicKey);
+        const dataString = JSON.stringify(data);
+        const encryptedString = await RSA.encrypt(dataString, this.publicKey);
+        return encryptedString;
     }
 
-    async decrypt(data: any) {
-        return RSA.decrypt(data, this.privateKey);
+    async decrypt(data: string) {
+        const dataString = data;
+        const decodedString = await RSA.decrypt(dataString, this.privateKey);
+        return JSON.parse(decodedString);
     }
 
     async sign(data: any) {

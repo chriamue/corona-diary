@@ -3,7 +3,11 @@ import React from 'react';
 import Clipboard from "@react-native-community/clipboard";
 import AsyncStorage from '@react-native-community/async-storage';
 import { Wallet } from '../Wallet';
-import { Text } from 'react-native';
+import {
+    ScrollView,
+    Text,
+    View
+} from 'react-native';
 import { Icon, Button, ThemeProvider } from 'react-native-elements';
 
 interface Props { }
@@ -60,11 +64,13 @@ export default class ConnectionReports extends React.Component<Props, State> {
         fetch(`https://dev.chriamue.de/api/v1/connections/${pubKeyB64}/${timestampB64}/${signatureB64}`)
             .then(res => res.json()).then(async (body) => {
                 const connections: any[] = []
-                for(const connection of body){
-                    console.log(connection.data)
-                    const data = await wallet.decrypt(connection.data).catch((e) => console.log(e));
+                for (const connection of body) {
+                    let cdata = connection.data
+                    console.log(cdata)
+                    const data = await wallet.decrypt(cdata).catch((e) => console.log(e));
+                    console.log(data?.message)
                     const timestamp = connection.timestamp;
-                    const message = 'm'//JSON.parse(data).message;
+                    const message = data?.message;
                     connections.push({
                         timestamp,
                         message
@@ -79,7 +85,7 @@ export default class ConnectionReports extends React.Component<Props, State> {
         if (!wallet) {
             return;
         }
-        return <Text key={index}>{connection.timestamp}</Text>
+        return <Text key={index}>[{connection.timestamp}] {connection.message}</Text>
     }
 
     render() {
@@ -89,8 +95,10 @@ export default class ConnectionReports extends React.Component<Props, State> {
         }
 
         return (<>
-            <Button title='load Connections' onPress={() => this.loadConnections()} />
-            {connections.map((connection, index) => { return this.renderConnection(connection, index) })}
-        </>)
+            <ScrollView><View>
+                <Button title='load Connections' onPress={() => this.loadConnections()} />
+                {connections.map((connection, index) => { return this.renderConnection(connection, index) })}
+            </View>
+            </ScrollView></>)
     }
 }
