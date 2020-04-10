@@ -1,4 +1,8 @@
 rootProject.name = 'CoronaDiaryApp'
+include ':@adrianso_react-native-nearby-api'
+project(':@adrianso_react-native-nearby-api').projectDir = new File(rootProject.projectDir, '../node_modules/@adrianso/react-native-nearby-api/android')
+include ':@adrianso_react-native-nearby-api'
+project(':@adrianso_react-native-nearby-api').projectDir = new File(rootProject.projectDir, '../node_modules/@adrianso/react-native-nearby-api/android')
 include ':react-native-rsa-native'
 project(':react-native-rsa-native').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-rsa-native/android')
 include ':react-native-randombytes'

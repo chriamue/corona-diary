@@ -1,0 +1,1 @@
+declare module '@adrianso/react-native-nearby-api';

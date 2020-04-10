@@ -58,6 +58,8 @@ target 'CoronaDiaryApp' do
 
   pod 'react-native-rsa-native', :path => '../node_modules/react-native-rsa-native'
 
+  pod 'RNNearbyApi', :path => '../node_modules/@adrianso/react-native-nearby-api'
+
   target 'CoronaDiaryAppTests' do
     inherit! :complete
     # Pods for testing

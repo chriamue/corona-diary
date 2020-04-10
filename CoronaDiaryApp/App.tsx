@@ -24,6 +24,7 @@ import {
 import Keys from './src/components/Keys';
 import ConnectionReports from './src/components/ConnectionReports';
 import ReportConnections from './src/components/ReportConnections';
+import Nearby from './src/components/Nearby';
 
 declare var global: { HermesInternal: null | {} };
 
@@ -44,6 +45,7 @@ const App = () => {
               <Text style={styles.sectionTitle}>Connections</Text>
               <ConnectionReports />
               <ReportConnections />
+              <Nearby/>
             </View>
           </View>
         </ScrollView>
