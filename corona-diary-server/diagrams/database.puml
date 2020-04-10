@@ -1,0 +1,22 @@
+@startuml database
+
+class Data {
+    String pubkey
+    String message
+}
+
+class Connection {
+        String pubkey
+        String signature
+        Data data
+        Timestamp timestamp
+}
+
+database "PostgreSQL" {
+    folder "connections" {
+    }
+}
+
+Connection *- Data : contains encrypted >
+
+@enduml
