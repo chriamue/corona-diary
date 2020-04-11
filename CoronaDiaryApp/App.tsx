@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react';
+import React, { DialogHTMLAttributes } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -27,14 +27,17 @@ import ConnectionReports from './src/components/ConnectionReports';
 import ReportConnections from './src/components/ReportConnections';
 import Nearby from './src/components/Nearby';
 import Charts from './src/components/Charts';
+import DiaryView from './src/components/DiaryView';
 import Connection from './src/Connection';
 import Connections from './src/Connections';
+import Diary from './src/Diary';
 
 declare var global: { HermesInternal: null | {} };
 interface Props { }
 interface State {
   pubkey: string | null;
   connections: Connections;
+  diary: Diary;
 }
 
 class App extends React.Component<Props, State>{
@@ -42,7 +45,8 @@ class App extends React.Component<Props, State>{
     super(props);
     this.state = {
       pubkey: null,
-      connections: new Connections(5)
+      connections: new Connections(5),
+      diary: new Diary()
     };
   }
 
@@ -93,6 +97,7 @@ class App extends React.Component<Props, State>{
                 <ReportConnections connections={this.state.connections} />
                 <Nearby pubkey={this.state.pubkey} connections={this.state.connections} onConnection={(connection: Connection) => this.onConnection(connection)} />
                 <Charts connections={this.state.connections} />
+                <DiaryView diary={this.state.diary} />
               </View>
             </View>
           </ScrollView>

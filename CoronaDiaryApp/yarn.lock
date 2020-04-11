@@ -4897,7 +4897,7 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-moment@^2.24.0:
+moment@^2.22.1, moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -5616,6 +5616,13 @@ react-native-chart-kit@^5.3.1:
     lodash "^4.17.13"
     paths-js "^0.4.10"
     point-in-polygon "^1.0.1"
+
+react-native-date-picker@^2.7.9:
+  version "2.7.9"
+  resolved "https://registry.yarnpkg.com/react-native-date-picker/-/react-native-date-picker-2.7.9.tgz#f662d8741a3f78148eccf492d70a1740b035024b"
+  integrity sha512-9D8N6oT8ZU5/zHDz2c+Asco24ESvd8Y7SnxipAyLB0GmtRFfRSJ+mOFwaZaYpeqAoSFJnRJVvICnDQCCLAl1cw==
+  dependencies:
+    moment "^2.22.1"
 
 react-native-dotenv@^0.2.0:
   version "0.2.0"
