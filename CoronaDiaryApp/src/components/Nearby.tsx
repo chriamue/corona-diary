@@ -35,17 +35,22 @@ export default class Nearby extends React.Component<Props, State> {
     }
 
     initNearby() {
-        const nearbyAPI = new NearbyAPI(false); // Use BLE only, no audio.
+        const nearbyAPI = new NearbyAPI(true); // Use BLE only, no audio.
         nearbyAPI.onConnected((message: any) => {
+            console.log(message)
             this.state.nearbyAPI.publish(this.props.pubkey);
             this.setState({ nearbyConnected: true });
         });
         nearbyAPI.onDisconnected((message: any) => {
+            console.log(message)
             this.setState({ nearbyConnected: false });
         });
         nearbyAPI.onFound((message: any) => {
             console.log("Message Found!");
-            console.log(message);
+            console.log('message', message);
+            const pubkey = message;
+            const connection = new Connection(pubkey, new Date())
+            this.props.onConnection(connection);
         });
         nearbyAPI.onLost((message: any) => {
             console.log("Message Lost!");
