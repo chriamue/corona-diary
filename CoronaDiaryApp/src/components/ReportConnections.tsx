@@ -6,8 +6,9 @@ import { Button } from 'react-native-elements';
 import { List } from 'immutable';
 import { Wallet } from '../Wallet';
 import Connection from '../Connection';
+import Connections from '../Connections';
 
-interface Props { connections: List<Connection> }
+interface Props { connections: Connections }
 interface State {
     wallet: Wallet | null
 }
@@ -68,7 +69,7 @@ export default class ReportConnections extends React.Component<Props, State> {
         const data = await bobWalletAtAlice.encrypt({
             message,
             pubkey: md5(alicePubKey),
-            timestamp: connection.timestamp
+            timestamp: connection.end
         })
 
         console.log('####', data, "####")
@@ -105,7 +106,7 @@ export default class ReportConnections extends React.Component<Props, State> {
             return;
         }
 
-        for (const connection of connections) {
+        for (const connection of connections.connections) {
             this.informConnection(connection);
         }
     }

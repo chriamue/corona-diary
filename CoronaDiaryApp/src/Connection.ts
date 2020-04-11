@@ -1,9 +1,22 @@
-export default class Connection{
-    pubkey: string;
-    timestamp: Date;
+import moment from 'moment';
 
-    constructor(pubkey: string, timestamp: Date){
+export default class Connection {
+    pubkey: string;
+    start: Date;
+    end: Date;
+
+    constructor(pubkey: string, timestamp: Date) {
         this.pubkey = pubkey;
-        this.timestamp = timestamp;
+        this.start = timestamp;
+        this.end = timestamp;
+    }
+
+    accumulate(other: Connection, duration: moment.Duration): Connection | null {
+        if (this.pubkey == other.pubkey && this.start < other.start && moment(this.end).add(duration).toDate() > other.start) {
+            this.end = other.end;
+            console.log(this.pubkey, this.start, other.end)
+            return this
+        }
+        return null;
     }
 }

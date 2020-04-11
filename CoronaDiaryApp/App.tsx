@@ -27,13 +27,13 @@ import ConnectionReports from './src/components/ConnectionReports';
 import ReportConnections from './src/components/ReportConnections';
 import Nearby from './src/components/Nearby';
 import Connection from './src/Connection';
-import { List } from 'immutable';
+import Connections from './src/Connections';
 
 declare var global: { HermesInternal: null | {} };
 interface Props { }
 interface State {
   pubkey: string | null;
-  connections: List<Connection>;
+  connections: Connections;
 }
 
 class App extends React.Component<Props, State>{
@@ -41,7 +41,7 @@ class App extends React.Component<Props, State>{
     super(props);
     this.state = {
       pubkey: null,
-      connections: List<Connection>()
+      connections: new Connections(5)
     };
   }
 
@@ -60,7 +60,7 @@ class App extends React.Component<Props, State>{
 
   onConnection(connection: Connection) {
     let { connections } = this.state;
-    connections = connections.push(connection)
+    connections = connections.add(connection)
     this.setState({ connections });
   }
 

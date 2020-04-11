@@ -2,12 +2,12 @@ import React from 'react';
 import { Text } from 'react-native';
 import { NearbyAPI } from "@adrianso/react-native-nearby-api";
 import { NEARBY_API_KEY } from 'react-native-dotenv'
-import { List } from 'immutable';
 import Connection from '../Connection';
+import Connections from '../Connections';
 
 interface Props {
     pubkey: string | null,
-    connections: List<Connection>
+    connections: Connections,
     onConnection: any,
 }
 interface State {
@@ -97,15 +97,15 @@ export default class Nearby extends React.Component<Props, State> {
         this.props.onConnection(connection);
     }
 
-    countLast5Min(){
-        const {connections} = this.props;
-        if(!connections){
+    countLast5Min() {
+        const { connections } = this.props;
+        if (!connections) {
             return 0;
         }
         let count = 0;
         const now = Date.now();
-        for(const connection of connections){
-            if(connection.timestamp.getTime() > now - 1000 * 60 * 5){
+        for (const connection of connections.connections) {
+            if (connection.end.getTime() > now - 1000 * 60 * 5) {
                 count += 1;
             }
         }
