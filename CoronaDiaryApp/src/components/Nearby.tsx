@@ -4,6 +4,7 @@ import { NearbyAPI } from "@adrianso/react-native-nearby-api";
 import { NEARBY_API_KEY } from 'react-native-dotenv'
 import Connection from '../Connection';
 import Connections from '../Connections';
+import ConnectionStats from '../ConnectionStats';
 
 interface Props {
     pubkey: string | null,
@@ -97,25 +98,11 @@ export default class Nearby extends React.Component<Props, State> {
         this.props.onConnection(connection);
     }
 
-    countLast5Min() {
-        const { connections } = this.props;
-        if (!connections) {
-            return 0;
-        }
-        let count = 0;
-        const now = Date.now();
-        for (const connection of connections.connections) {
-            if (connection.end.getTime() > now - 1000 * 60 * 5) {
-                count += 1;
-            }
-        }
-        return count;
-    }
-
     render() {
         const { nearbyConnected } = this.state;
+        const connectionStats = new ConnectionStats(this.props.connections);
         return (
-            <Text onPress={() => this.newConnection()}>{this.countLast5Min()} Nearby {nearbyConnected ? "[C]" : null}</Text>
+            <Text onPress={() => this.newConnection()}>{connectionStats.countLast5Min()} Nearby {nearbyConnected ? "[C]" : null}</Text>
         )
     }
 }

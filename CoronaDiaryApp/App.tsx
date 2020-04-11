@@ -26,6 +26,7 @@ import Keys from './src/components/Keys';
 import ConnectionReports from './src/components/ConnectionReports';
 import ReportConnections from './src/components/ReportConnections';
 import Nearby from './src/components/Nearby';
+import Charts from './src/components/Charts';
 import Connection from './src/Connection';
 import Connections from './src/Connections';
 
@@ -91,6 +92,7 @@ class App extends React.Component<Props, State>{
                 <ConnectionReports />
                 <ReportConnections connections={this.state.connections} />
                 <Nearby pubkey={this.state.pubkey} connections={this.state.connections} onConnection={(connection: Connection) => this.onConnection(connection)} />
+                <Charts connections={this.state.connections} />
               </View>
             </View>
           </ScrollView>
