@@ -60,6 +60,8 @@ target 'CoronaDiaryApp' do
 
   pod 'RNNearbyApi', :path => '../node_modules/@adrianso/react-native-nearby-api'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'CoronaDiaryAppTests' do
     inherit! :complete
     # Pods for testing

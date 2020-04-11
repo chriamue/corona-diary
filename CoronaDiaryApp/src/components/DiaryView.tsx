@@ -1,10 +1,11 @@
 import moment from 'moment';
 import React from 'react';
-import { View, Dimensions } from 'react-native';
+import { View, ScrollView, Dimensions } from 'react-native';
 import DatePicker from 'react-native-date-picker'
 
 import Diary from '../Diary';
 import { Button, Rating } from 'react-native-elements';
+import MultiSelect from 'react-native-multiple-select';
 
 
 interface Props {
@@ -12,7 +13,8 @@ interface Props {
 }
 interface State {
     date: Date,
-    rating: number
+    rating: number,
+    symptoms: any[]
 }
 
 export default class DiaryView extends React.Component<Props, State> {
@@ -22,6 +24,7 @@ export default class DiaryView extends React.Component<Props, State> {
         this.state = {
             date: new Date(),
             rating: 3,
+            symptoms: []
         };
     }
 
@@ -39,16 +42,30 @@ export default class DiaryView extends React.Component<Props, State> {
         this.setState({ rating });
     }
 
+    handleSymptoms(selectedSymptoms: any) {
+        this.setState({ symptoms: selectedSymptoms })
+    };
+
+    symptomOptions() {
+        const options: any[] = [
+            { id: 'FEVER', name: 'Fever' },
+            { id: 'COUGH', name: 'Cough' },
+            { id: 'BREATH', name: 'Shortness of breath' },
+            { id: 'NO', name: 'No' }
+        ]
+        return options;
+    }
+
     render() {
         const { diary } = this.props;
-        const { date, rating } = this.state
+        const { date, rating, symptoms } = this.state
         if (!diary) {
             return null;
         }
-        return (
+        return (<>
             <View>
                 <Rating
-                type='heart'
+                    type='heart'
                     //reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
                     startingValue={rating}
                     ratingCount={5}
@@ -56,13 +73,25 @@ export default class DiaryView extends React.Component<Props, State> {
                     //showRating
                     onFinishRating={(rating) => this.ratingCompleted(rating)}
                 />
-                <DatePicker date={date}
-                    minimumDate={moment(new Date).subtract(7, 'days').toDate()}
-                    maximumDate={new Date()}
-                    minuteInterval={30}
-                    onDateChange={(date) => this.setState({ date })} />
+                <ScrollView horizontal>
+                    <MultiSelect
+                        hideTags
+                        hideSubmitButton
+                        hideDropdown
+                        items={this.symptomOptions()}
+                        uniqueKey="id"
+                        selectedItems={symptoms}
+                        onSelectedItemsChange={(selectedItems: any[]) => this.handleSymptoms(selectedItems)}
+                    /></ScrollView>
+                <View>
+                    <DatePicker date={date}
+                        minimumDate={moment(new Date).subtract(7, 'days').toDate()}
+                        maximumDate={new Date()}
+                        minuteInterval={30}
+                        onDateChange={(date) => this.setState({ date })} />
+                </View>
                 <Button title='Save' onPress={() => this.save()} />
-            </View>
+            </View></>
         )
     }
 }
