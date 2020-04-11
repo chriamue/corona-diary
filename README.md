@@ -106,7 +106,7 @@ to make sure the person is truly ill.
 The proof will only contain the public key of the ill person,
 so the real identity is still anonym.
 
-![The Sovrin SSI Stack](https://sovrin.org/wp-content/uploads/SovrinSSIStack.png)
+[Read more ...](SSI/README.md)
 
 ## Related Projects
 
