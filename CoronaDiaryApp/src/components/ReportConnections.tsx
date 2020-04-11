@@ -3,12 +3,16 @@ import md5 from 'md5';
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Button } from 'react-native-elements';
-import { List } from 'immutable';
 import { Wallet } from '../Wallet';
 import Connection from '../Connection';
 import Connections from '../Connections';
+import Diary from '../Diary';
+import DiaryEntry from '../DiaryEntry';
 
-interface Props { connections: Connections }
+interface Props {
+    connections: Connections,
+    diary: Diary
+}
 interface State {
     wallet: Wallet | null
 }
@@ -42,7 +46,7 @@ export default class ReportConnections extends React.Component<Props, State> {
         }
     }
 
-    async informConnection(connection: Connection) {
+    async informConnection(connection: Connection, entry: DiaryEntry) {
         const bobPubKey = connection.pubkey
         console.log(bobPubKey)
         const aliceWallet = this.state.wallet;
@@ -69,6 +73,7 @@ export default class ReportConnections extends React.Component<Props, State> {
         const data = await bobWalletAtAlice.encrypt({
             message,
             pubkey: md5(alicePubKey),
+            diary: entry.json(),
             timestamp: connection.end
         })
 
@@ -100,15 +105,16 @@ export default class ReportConnections extends React.Component<Props, State> {
     }
 
     informConnections() {
-        const { connections } = this.props;
-        console.log(connections)
-        if (!connections) {
+        const { connections, diary } = this.props;
+        if (!connections || !diary) {
             return;
         }
-
-        for (const connection of connections.connections) {
-            this.informConnection(connection);
+        for( const entry of diary.entries){
+                    for (const connection of connections.connections) {
+            this.informConnection(connection, entry);
         }
+        }
+
     }
 
     render() {

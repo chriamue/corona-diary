@@ -3,7 +3,7 @@ import { RSA } from 'react-native-rsa-native';
 
 export class Wallet {
 
-    bits: number = 1024;
+    bits: number = 2048;
     privateKey: string = '';
     publicKey: string = '';
 

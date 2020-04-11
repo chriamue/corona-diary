@@ -6,10 +6,12 @@ import DatePicker from 'react-native-date-picker'
 import Diary from '../Diary';
 import { Button, Rating } from 'react-native-elements';
 import MultiSelect from 'react-native-multiple-select';
+import DiaryEntry from '../DiaryEntry';
 
 
 interface Props {
-    diary: Diary
+    diary: Diary,
+    onNewEntry: any,
 }
 interface State {
     date: Date,
@@ -35,7 +37,9 @@ export default class DiaryView extends React.Component<Props, State> {
     }
 
     save() {
-
+        const entry = new DiaryEntry(this.state.rating, this.state.date);
+        entry.addSymptoms(this.state.symptoms)
+        this.props.onNewEntry(entry);
     }
 
     ratingCompleted(rating: number) {

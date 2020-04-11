@@ -10,7 +10,15 @@ export default class DiaryEntry {
         this.timestamp = timestamp;
     }
 
-    addSymptoms(symptoms: []) {
+    addSymptoms(symptoms: string[]) {
         this.symptoms = symptoms;
+    }
+
+    json() {
+        return {
+            wellbeing: this.wellbeing,
+            timestamp: this.timestamp,
+            symptoms: this.symptoms
+        }
     }
 }

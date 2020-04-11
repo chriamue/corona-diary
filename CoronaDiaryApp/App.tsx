@@ -31,6 +31,7 @@ import DiaryView from './src/components/DiaryView';
 import Connection from './src/Connection';
 import Connections from './src/Connections';
 import Diary from './src/Diary';
+import DiaryEntry from './src/DiaryEntry';
 
 declare var global: { HermesInternal: null | {} };
 interface Props { }
@@ -69,6 +70,12 @@ class App extends React.Component<Props, State>{
     this.setState({ connections });
   }
 
+  onNewDiaryEntry(entry: DiaryEntry) {
+    const { diary } = this.state;
+    diary.addEntry(entry);
+    this.setState({ diary });
+  }
+
 
   render() {
     if (!this.state.pubkey) {
@@ -94,10 +101,10 @@ class App extends React.Component<Props, State>{
               <View style={styles.sectionContainer}>
                 <Text style={styles.sectionTitle}>Connections</Text>
                 <ConnectionReports />
-                <ReportConnections connections={this.state.connections} />
+                <ReportConnections connections={this.state.connections} diary={this.state.diary} />
                 <Nearby pubkey={this.state.pubkey} connections={this.state.connections} onConnection={(connection: Connection) => this.onConnection(connection)} />
                 <Charts connections={this.state.connections} />
-                <DiaryView diary={this.state.diary} />
+                <DiaryView diary={this.state.diary} onNewEntry={(entry: DiaryEntry) => this.onNewDiaryEntry(entry)} />
               </View>
             </View>
           </ScrollView>

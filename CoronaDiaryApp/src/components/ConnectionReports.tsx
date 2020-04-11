@@ -68,16 +68,47 @@ export default class ConnectionReports extends React.Component<Props, State> {
                     let cdata = connection.data
                     console.log(cdata)
                     const data = await wallet.decrypt(cdata).catch((e) => console.log(e));
-                    console.log(data?.message)
+                    if (!data) {
+                        continue;
+                    }
                     const timestamp = connection.timestamp;
-                    const message = data?.message;
+                    const diary = data.diary;
                     connections.push({
                         timestamp,
-                        message
+                        symptoms: diary.symptoms
                     })
                 }
                 this.setState({ connections })
             });
+    }
+
+    renderSymptoms(symptoms: string[]) {
+        try {
+            return symptoms.map((symptom) => {
+                if (symptom == 'FEVER') {
+                    return <Icon
+                        name='thermometer-full'
+                        type='font-awesome'
+                    />
+                } else if (symptom == 'COUGH') {
+                    return <Icon
+                        name='head-side-cough'
+                        type='font-awesome'
+                    />
+                } else if (symptom == 'BREATH') {
+                    return <Icon
+                        name='lungs-virus'
+                        type='font-awesome'
+                    />
+                } else {
+                    return <Icon
+                        name='walking'
+                        type='font-awesome' />;
+                }
+            })
+        } catch (e) {
+            return null;
+        }
     }
 
     renderConnection(connection: any, index: number) {
@@ -85,7 +116,10 @@ export default class ConnectionReports extends React.Component<Props, State> {
         if (!wallet) {
             return;
         }
-        return <Text key={index}>[{connection.timestamp}] {connection.message}</Text>
+        return <><Text key={index}>[{connection.timestamp}]</Text>
+        {this.renderSymptoms(connection.symptoms)}
+        </>
+
     }
 
     render() {
