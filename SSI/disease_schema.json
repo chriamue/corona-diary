@@ -1,0 +1,12 @@
+{
+    "name": "disease",
+    "version": "0.1",
+    "attrNames": [
+        "symptoms",
+        "first_time_symptoms",
+        "coombs_test",
+        "virus_test",
+        "test_positive",
+        "tested_date"
+    ]
+}

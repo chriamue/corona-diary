@@ -12,3 +12,30 @@ The proof will only contain the public key of the ill person,
 so the real identity is still anonym.
 
 ![The Sovrin SSI Stack](https://sovrin.org/wp-content/uploads/SovrinSSIStack.png)
+
+## DID
+
+As an institution health offices will get DIDs.
+They will issue the credentials.
+
+## Schema
+
+```javascript
+{
+    "name": "disease",
+    "version": "0.1",
+    "attrNames": [
+        "symptoms",
+        "first_time_symptoms",
+        "coombs_test",
+        "virus_test",
+        "test_positive",
+        "tested_date"
+    ]
+}
+```
+
+## What will be shared?
+
+Tested persons do not need to share everything.
+They can just share 'test_positive' and 'tested_date'.
