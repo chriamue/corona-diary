@@ -2,10 +2,12 @@ import { Base64 } from 'js-base64';
 import md5 from 'md5';
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
-import { Wallet } from '../Wallet';
 import { Button } from 'react-native-elements';
+import { List } from 'immutable';
+import { Wallet } from '../Wallet';
+import Connection from '../Connection';
 
-interface Props { }
+interface Props { connections: List<Connection> }
 interface State {
     wallet: Wallet | null
 }
@@ -39,7 +41,9 @@ export default class ReportConnections extends React.Component<Props, State> {
         }
     }
 
-    async informConnection(bobPubKey: string) {
+    async informConnection(connection: Connection) {
+        const bobPubKey = connection.pubkey
+        console.log(bobPubKey)
         const aliceWallet = this.state.wallet;
         if (!aliceWallet) {
             return;
@@ -63,7 +67,8 @@ export default class ReportConnections extends React.Component<Props, State> {
 
         const data = await bobWalletAtAlice.encrypt({
             message,
-            pubkey: md5(alicePubKey)
+            pubkey: md5(alicePubKey),
+            timestamp: connection.timestamp
         })
 
         console.log('####', data, "####")
@@ -86,21 +91,22 @@ export default class ReportConnections extends React.Component<Props, State> {
         }
         fetch(`https://dev.chriamue.de/api/v1/connection/${alicePubKeyB64}/${timestampB64}/${signatureB64}`, post_data)
             .then(res => {
-                if(res.status == 200){
+                if (res.status == 200) {
                     console.log("Informed", bobPubKey);
                 }
             });
-            
+
     }
 
     informConnections() {
-        if (!this.state.wallet) {
+        const { connections } = this.props;
+        console.log(connections)
+        if (!connections) {
             return;
         }
-        const publicKeys: string[] = [this.state.wallet.getPublicKey()]
 
-        for (const pubkey of publicKeys) {
-            this.informConnection(pubkey);
+        for (const connection of connections) {
+            this.informConnection(connection);
         }
     }
 

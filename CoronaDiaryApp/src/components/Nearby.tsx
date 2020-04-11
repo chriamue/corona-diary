@@ -1,11 +1,16 @@
 import React from 'react';
-import AsyncStorage from '@react-native-community/async-storage';
 import { Text } from 'react-native';
 import { NearbyAPI } from "@adrianso/react-native-nearby-api";
+import { NEARBY_API_KEY } from 'react-native-dotenv'
+import { List } from 'immutable';
+import Connection from '../Connection';
 
-interface Props { }
+interface Props {
+    pubkey: string | null,
+    connections: List<Connection>
+    onConnection: any,
+}
 interface State {
-    pubkeys: string[],
     nearbyAPI: any,
     nearbyConnected: boolean
 }
@@ -15,7 +20,6 @@ export default class Nearby extends React.Component<Props, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            pubkeys: [],
             nearbyAPI: null,
             nearbyConnected: false
         };
@@ -23,16 +27,16 @@ export default class Nearby extends React.Component<Props, State> {
 
     componentDidMount() {
         this.initNearby();
-        this.loadWallet();
     }
 
     componentWillUnmount() {
         this.state.nearbyAPI.disconnect();
     }
 
-    initNearby(){
+    initNearby() {
         const nearbyAPI = new NearbyAPI(false); // Use BLE only, no audio.
         nearbyAPI.onConnected((message: any) => {
+            this.state.nearbyAPI.publish(this.props.pubkey);
             this.setState({ nearbyConnected: true });
         });
         nearbyAPI.onDisconnected((message: any) => {
@@ -60,8 +64,8 @@ export default class Nearby extends React.Component<Props, State> {
         nearbyAPI.onSubscribeFailed(() => { });
 
         // To connect from Google API Client
-        nearbyAPI.connect('AIzaSyBFiIXy8fQN634GXZ7impcNCeEZKqebA2E');
-
+        nearbyAPI.connect(NEARBY_API_KEY);
+        nearbyAPI.connect();
         // To check if the nearby API is connected.
         nearbyAPI.isConnected((connected: any, error: any) => {
             this.setState({ nearbyConnected: connected });
@@ -85,20 +89,33 @@ export default class Nearby extends React.Component<Props, State> {
         this.setState({ nearbyAPI })
     }
 
-    async loadWallet() {
-
-        try {
-            const pubkey = await AsyncStorage.getItem('@pubkey')
-            this.state.nearbyAPI.publish(pubkey);
-        } catch (e) {
-            console.log(e);
+    newConnection() {
+        if (!this.props.pubkey) {
+            return;
         }
+        const connection = new Connection(this.props.pubkey, new Date())
+        this.props.onConnection(connection);
+    }
+
+    countLast5Min(){
+        const {connections} = this.props;
+        if(!connections){
+            return 0;
+        }
+        let count = 0;
+        const now = Date.now();
+        for(const connection of connections){
+            if(connection.timestamp.getTime() > now - 1000 * 60 * 5){
+                count += 1;
+            }
+        }
+        return count;
     }
 
     render() {
-        const { pubkeys, nearbyConnected } = this.state;
+        const { nearbyConnected } = this.state;
         return (
-            <Text>{pubkeys.length} Nearby {nearbyConnected ? "[C]" : null}</Text>
+            <Text onPress={() => this.newConnection()}>{this.countLast5Min()} Nearby {nearbyConnected ? "[C]" : null}</Text>
         )
     }
 }

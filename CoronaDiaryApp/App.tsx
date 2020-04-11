@@ -21,37 +21,83 @@ import {
 import {
   Colors
 } from 'react-native/Libraries/NewAppScreen';
+import AsyncStorage from '@react-native-community/async-storage';
 import Keys from './src/components/Keys';
 import ConnectionReports from './src/components/ConnectionReports';
 import ReportConnections from './src/components/ReportConnections';
 import Nearby from './src/components/Nearby';
+import Connection from './src/Connection';
+import { List } from 'immutable';
 
 declare var global: { HermesInternal: null | {} };
+interface Props { }
+interface State {
+  pubkey: string | null;
+  connections: List<Connection>;
+}
 
-const App = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Text>Corona Diary</Text>
-          <View style={styles.body}>
-            <Keys />
-          </View>
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Connections</Text>
-              <ConnectionReports />
-              <ReportConnections />
-              <Nearby/>
+class App extends React.Component<Props, State>{
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      pubkey: null,
+      connections: List<Connection>()
+    };
+  }
+
+  componentDidMount() {
+    this.loadPubkey();
+  }
+
+  async loadPubkey() {
+    try {
+      const pubkey = await AsyncStorage.getItem('@pubkey')
+      this.setState({ pubkey });
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  onConnection(connection: Connection) {
+    let { connections } = this.state;
+    connections = connections.push(connection)
+    this.setState({ connections });
+  }
+
+
+  render() {
+    if (!this.state.pubkey) {
+      return (<SafeAreaView>
+        <Text>Corona Diary</Text>
+        <View style={styles.body}>
+          <Keys />
+        </View>
+      </SafeAreaView>)
+    }
+    return (
+      <>
+        <StatusBar barStyle="dark-content" />
+        <SafeAreaView>
+          <ScrollView
+            contentInsetAdjustmentBehavior="automatic"
+            style={styles.scrollView}>
+            <Text>Corona Diary</Text>
+            <View style={styles.body}>
+              <Keys />
             </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
+            <View style={styles.body}>
+              <View style={styles.sectionContainer}>
+                <Text style={styles.sectionTitle}>Connections</Text>
+                <ConnectionReports />
+                <ReportConnections connections={this.state.connections} />
+                <Nearby pubkey={this.state.pubkey} connections={this.state.connections} onConnection={(connection: Connection) => this.onConnection(connection)} />
+              </View>
+            </View>
+          </ScrollView>
+        </SafeAreaView>
+      </>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
