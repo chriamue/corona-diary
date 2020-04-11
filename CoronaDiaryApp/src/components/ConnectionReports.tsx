@@ -9,6 +9,8 @@ import {
     View
 } from 'react-native';
 import { Icon, Button, ThemeProvider } from 'react-native-elements';
+import ConnectionView from './ConnectionView';
+import { fromJson as diaryFromJson } from '../DiaryEntry';
 
 interface Props { }
 interface State {
@@ -46,7 +48,6 @@ export default class ConnectionReports extends React.Component<Props, State> {
         }
     }
 
-
     async loadConnections() {
         const { wallet } = this.state;
         if (!wallet) {
@@ -72,55 +73,19 @@ export default class ConnectionReports extends React.Component<Props, State> {
                         continue;
                     }
                     const timestamp = connection.timestamp;
-                    const diary = data.diary;
+                    const diary = diaryFromJson(data.diary);
                     connections.push({
                         timestamp,
-                        symptoms: diary.symptoms
+                        diary
                     })
                 }
                 this.setState({ connections })
             });
     }
 
-    renderSymptoms(symptoms: string[]) {
-        try {
-            return symptoms.map((symptom) => {
-                if (symptom == 'FEVER') {
-                    return <Icon
-                        name='thermometer-full'
-                        type='font-awesome'
-                    />
-                } else if (symptom == 'COUGH') {
-                    return <Icon
-                        name='head-side-cough'
-                        type='font-awesome'
-                    />
-                } else if (symptom == 'BREATH') {
-                    return <Icon
-                        name='lungs-virus'
-                        type='font-awesome'
-                    />
-                } else {
-                    return <Icon
-                        name='walking'
-                        type='font-awesome' />;
-                }
-            })
-        } catch (e) {
-            return null;
-        }
-    }
 
-    renderConnection(connection: any, index: number) {
-        const { wallet } = this.state;
-        if (!wallet) {
-            return;
-        }
-        return <><Text key={index}>[{connection.timestamp}]</Text>
-        {this.renderSymptoms(connection.symptoms)}
-        </>
 
-    }
+
 
     render() {
         const { connections, wallet } = this.state;
@@ -131,7 +96,7 @@ export default class ConnectionReports extends React.Component<Props, State> {
         return (<>
             <ScrollView><View>
                 <Button title='load Connections' onPress={() => this.loadConnections()} />
-                {connections.map((connection, index) => { return this.renderConnection(connection, index) })}
+                {connections.map((connection, index) => <ConnectionView key={index} connection={connection} />)}
             </View>
             </ScrollView></>)
     }
