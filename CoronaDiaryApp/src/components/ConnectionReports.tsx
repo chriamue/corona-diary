@@ -1,7 +1,7 @@
 import { Base64 } from 'js-base64';
 import React from 'react';
-import Clipboard from "@react-native-community/clipboard";
 import AsyncStorage from '@react-native-community/async-storage';
+import { CORONA_DIARY_SERVER } from 'react-native-dotenv'
 import { Wallet } from '../Wallet';
 import {
     ScrollView,
@@ -62,7 +62,9 @@ export default class ConnectionReports extends React.Component<Props, State> {
         const timestampB64 = Base64.encode(timestamp);
         const signatureB64 = Base64.encode(signature);
 
-        fetch(`https://dev.chriamue.de/api/v1/connections/${pubKeyB64}/${timestampB64}/${signatureB64}`)
+        console.log(CORONA_DIARY_SERVER)
+
+        fetch(`https://${CORONA_DIARY_SERVER}/api/v1/connections/${pubKeyB64}/${timestampB64}/${signatureB64}`)
             .then(res => res.json()).then(async (body) => {
                 const connections: any[] = []
                 for (const connection of body) {
@@ -96,7 +98,7 @@ export default class ConnectionReports extends React.Component<Props, State> {
         return (<>
             <ScrollView><View>
                 <Button title='load Connections' onPress={() => this.loadConnections()} />
-                {connections.map((connection, index) => <ConnectionView key={index} connection={connection} />)}
+                {connections.map((connection, index) => <ConnectionView key={`connection-view-${index}`} connection={connection} />)}
             </View>
             </ScrollView></>)
     }

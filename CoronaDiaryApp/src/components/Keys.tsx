@@ -2,9 +2,10 @@ import { Base64 } from 'js-base64';
 import React from 'react';
 import Clipboard from "@react-native-community/clipboard";
 import AsyncStorage from '@react-native-community/async-storage';
+import { Icon, Button, ThemeProvider } from 'react-native-elements';
+import { CORONA_DIARY_SERVER } from 'react-native-dotenv'
 import { Wallet } from '../Wallet';
 import { Text } from 'react-native';
-import { Icon, Button, ThemeProvider } from 'react-native-elements';
 
 interface Props { }
 interface State {
@@ -69,7 +70,7 @@ export default class Keys extends React.Component<Props, State> {
         const timestampB64 = Base64.encode(timestamp);
         const signatureB64 = Base64.encode(signature);
 
-        fetch(`http://dev.chriamue.de/api/v1/authentificate/${pubKeyB64}/${timestampB64}/${signatureB64}`)
+        fetch(`https://${CORONA_DIARY_SERVER}/api/v1/authentificate/${pubKeyB64}/${timestampB64}/${signatureB64}`)
             .then(res => res.json()).then(data => console.log(data));
     }
 

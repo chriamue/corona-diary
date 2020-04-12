@@ -3,6 +3,7 @@ import md5 from 'md5';
 import React from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Button } from 'react-native-elements';
+import { CORONA_DIARY_SERVER } from 'react-native-dotenv';
 import { Wallet } from '../Wallet';
 import Connection from '../Connection';
 import Connections from '../Connections';
@@ -95,7 +96,7 @@ export default class ReportConnections extends React.Component<Props, State> {
                 'Content-Type': 'application/json'
             }
         }
-        fetch(`https://dev.chriamue.de/api/v1/connection/${alicePubKeyB64}/${timestampB64}/${signatureB64}`, post_data)
+        fetch(`https://${CORONA_DIARY_SERVER}/api/v1/connection/${alicePubKeyB64}/${timestampB64}/${signatureB64}`, post_data)
             .then(res => {
                 if (res.status == 200) {
                     console.log("Informed", bobPubKey);

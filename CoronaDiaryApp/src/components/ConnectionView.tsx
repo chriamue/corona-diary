@@ -3,6 +3,7 @@ import {
     ScrollView
 } from 'react-native';
 import { Text, Rating } from 'react-native-elements';
+import * as Progress from 'react-native-progress';
 
 import { Icon, Badge, Button, ThemeProvider } from 'react-native-elements';
 
@@ -70,8 +71,12 @@ export default class ConnectionView extends React.Component<Props, State> {
         }
     }
 
-    renderWellbeing(wellbeing: number) {
+    renderWellbeingExpanded(wellbeing: number) {
         return Array.from({ length: wellbeing }, (_, index) => <Icon key={index} name='heart' type='font-awesome' />)
+    }
+
+    renderWellbeing(wellbeing: number) {
+        return <Progress.Pie progress={wellbeing * 1.0 / 5} color='red' size={10} />
     }
 
     render() {
@@ -79,7 +84,7 @@ export default class ConnectionView extends React.Component<Props, State> {
         const { expand } = this.state;
         return <ScrollView horizontal><Text onPress={() => this.setState({ expand: !expand })}>[{connection.timestamp}]</Text>
             {expand ? this.renderSymptomsExpanded(connection.diary.symptoms) : this.renderSymptoms(connection.diary.symptoms)}
-            {expand ? this.renderWellbeing(connection.diary.wellbeing) : null}
+            {expand ? this.renderWellbeingExpanded(connection.diary.wellbeing) : this.renderWellbeing(connection.diary.wellbeing)}
         </ScrollView>
     }
 }

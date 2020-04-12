@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@adrianso/react-native-nearby-api": "^1.0.5",
+    "@react-native-community/art": "^1.2.0",
     "@react-native-community/async-storage": "^1.9.0",
     "@react-native-community/clipboard": "^1.2.1",
     "@tradle/react-native-http": "^2.0.1",
@@ -40,6 +41,7 @@
     "react-native-level-fs": "^3.0.1",
     "react-native-multiple-select": "^0.5.5",
     "react-native-os": "^1.2.6",
+    "react-native-progress": "^4.1.2",
     "react-native-randombytes": "^3.5.3",
     "react-native-rsa-native": "^1.1.4",
     "react-native-svg": "^12.1.0",
