@@ -6,6 +6,34 @@ Project status: ideation
 [![Build Status](https://travis-ci.org/chriamue/corona-diary.svg?branch=master)](https://travis-ci.org/chriamue/corona-diary)
 [![Coverage Status](https://coveralls.io/repos/github/chriamue/corona-diary/badge.svg?branch=master)](https://coveralls.io/github/chriamue/corona-diary?branch=master)
 
+## Progress
+
+### Website
+
+ - [x] [c-diary.info](c-diary.info)
+ - [ ] content
+
+### Server
+
+ - [x] database
+ - [x] authentification
+ - [x] store connections
+ - [x] serve connections
+
+### App
+
+ - [x] react native
+ - [x] private/public keypair
+ - [ ] rotate keypair
+ - [x] bluetooth nearby
+ - [ ] other nearby technology
+ - [x] diary wellbeing
+ - [x] diary symptoms
+ - [x] send diary for connections to server
+ - [x] get connections list from server
+ - [ ] visualize connections
+ - [ ] design
+
 ## 3 Parts
 
 This project contains of 3 parts.
