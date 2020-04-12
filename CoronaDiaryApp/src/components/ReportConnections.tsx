@@ -9,6 +9,7 @@ import Connection from '../Connection';
 import Connections, { loadConnections } from '../Connections';
 import Diary from '../Diary';
 import DiaryEntry from '../DiaryEntry';
+import ConnectionMessage from '../ConnectionMessage';
 
 interface Props {
     connections: Connections,
@@ -69,14 +70,9 @@ export default class ReportConnections extends React.Component<Props, State> {
         const timestampB64 = Base64.encode(timestamp);
         const signatureB64 = Base64.encode(auth_signature);
 
-        const message = 'infected';
-
-        const data = await bobWalletAtAlice.encrypt({
-            message,
-            pubkey: md5(alicePubKey),
-            diary: entry.json(),
-            timestamp: connection.end
-        })
+        const message = new ConnectionMessage(md5(alicePubKey), connection.end, entry);
+        
+        const data = await bobWalletAtAlice.encrypt(message.json());
 
         console.log('####', data, "####")
 
@@ -85,7 +81,7 @@ export default class ReportConnections extends React.Component<Props, State> {
         const body = {
             pubkey: bobPubKey,
             data,
-            signature
+            signature: md5(signature)
         }
 
         let post_data = {

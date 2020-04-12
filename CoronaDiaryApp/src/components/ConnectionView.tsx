@@ -7,10 +7,11 @@ import * as Progress from 'react-native-progress';
 
 import { Icon, Badge } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faLungsVirus, faWalking, faHeadSideCough, faThermometerThreeQuarters, faTemperatureHigh } from '@fortawesome/free-solid-svg-icons'
+import { faLungsVirus, faWalking, faHeadSideCough, faThermometerThreeQuarters } from '@fortawesome/free-solid-svg-icons'
+import ConnectionMessage from '../ConnectionMessage';
 
 interface Props {
-    connection: any
+    connection: ConnectionMessage
 }
 interface State {
     expand: boolean
@@ -47,13 +48,13 @@ export default class ConnectionView extends React.Component<Props, State> {
         try {
             return symptoms.map((symptom) => {
                 if (symptom == 'FEVER') {
-                    return <FontAwesomeIcon icon={ faThermometerThreeQuarters }/>
+                    return <FontAwesomeIcon icon={faThermometerThreeQuarters} />
                 } else if (symptom == 'COUGH') {
-                    return <FontAwesomeIcon icon={ faHeadSideCough }/>
+                    return <FontAwesomeIcon icon={faHeadSideCough} />
                 } else if (symptom == 'BREATH') {
-                    return <FontAwesomeIcon icon={ faLungsVirus }/>
+                    return <FontAwesomeIcon icon={faLungsVirus} />
                 } else {
-                    return <FontAwesomeIcon icon={ faWalking }/>
+                    return <FontAwesomeIcon icon={faWalking} />
                 }
             })
         } catch (e) {
@@ -62,19 +63,19 @@ export default class ConnectionView extends React.Component<Props, State> {
     }
 
     renderWellbeingExpanded(wellbeing: number) {
-        return Array.from({ length: wellbeing }, (_, index) => <Icon key={`heart-${index}`} name='heart' type='font-awesome' />)
+        return Array.from({ length: wellbeing }, (_, index) => <Icon key={`heart-${index}`} size={12} color={'red'} name='heart' type='font-awesome' />)
     }
 
     renderWellbeing(wellbeing: number) {
-        return <Progress.Pie progress={wellbeing * 1.0 / 5} color='red' size={10} />
+        return <Progress.Pie progress={wellbeing * 1.0 / 5} color='red' size={12} />
     }
 
     render() {
         const { connection } = this.props;
         const { expand } = this.state;
         return <ScrollView horizontal><Text onPress={() => this.setState({ expand: !expand })}>[{connection.timestamp}]</Text>
-            {expand ? this.renderSymptomsExpanded(connection.diary.symptoms) : this.renderSymptoms(connection.diary.symptoms)}
-            {expand ? this.renderWellbeingExpanded(connection.diary.wellbeing) : this.renderWellbeing(connection.diary.wellbeing)}
+            {expand ? this.renderSymptomsExpanded(connection.diaryEntry.symptoms) : this.renderSymptoms(connection.diaryEntry.symptoms)}
+            {expand ? this.renderWellbeingExpanded(connection.diaryEntry.wellbeing) : this.renderWellbeing(connection.diaryEntry.wellbeing)}
         </ScrollView>
     }
 }

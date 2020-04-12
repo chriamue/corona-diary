@@ -11,6 +11,7 @@ import {
 import { Icon, Button, ThemeProvider } from 'react-native-elements';
 import ConnectionView from './ConnectionView';
 import { fromJson as diaryFromJson } from '../DiaryEntry';
+import { fromJson as connectionMessageFromJson } from '../ConnectionMessage';
 
 interface Props { }
 interface State {
@@ -68,18 +69,17 @@ export default class ConnectionReports extends React.Component<Props, State> {
             .then(res => res.json()).then(async (body) => {
                 const connections: any[] = []
                 for (const connection of body) {
-                    let cdata = connection.data
-                    console.log(cdata)
-                    const data = await wallet.decrypt(cdata).catch((e) => console.log(e));
-                    if (!data) {
-                        continue;
+                    try {
+                        let cdata = connection.data
+                        const data = await wallet.decrypt(cdata).catch((e) => console.log(e));
+                        if (!data) {
+                            continue;
+                        }
+                        const message = connectionMessageFromJson(data);
+                        connections.push(message)
+                    } catch (err) {
+                        console.log(err);
                     }
-                    const timestamp = connection.timestamp;
-                    const diary = diaryFromJson(data.diary);
-                    connections.push({
-                        timestamp,
-                        diary
-                    })
                 }
                 this.setState({ connections })
             });
