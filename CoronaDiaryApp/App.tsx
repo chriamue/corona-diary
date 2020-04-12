@@ -8,20 +8,9 @@
  * @format
  */
 
-import React, { DialogHTMLAttributes } from 'react';
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
-
-import {
-  Colors
-} from 'react-native/Libraries/NewAppScreen';
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Keys from './src/components/Keys';
 import SettingsScreen from './src/screens/SettingsScreen';
 import ConnectionsScreen from './src/screens/ConnectionsScreen';
 import DiaryScreen from './src/screens/DiaryScreen';
@@ -41,13 +30,6 @@ class App extends React.Component<Props, State>{
   }
 
   componentDidMount() {
-  }
-  HomeScreen() {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <Text>Home!</Text>
-      </View>
-    );
   }
 
   render() {

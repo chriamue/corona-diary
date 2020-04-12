@@ -8,7 +8,7 @@ import ReportConnections from '../components/ReportConnections';
 import Nearby from '../components/Nearby';
 import Connection from '../Connection';
 import Connections, { loadConnections, saveConnections } from '../Connections';
-import Diary from '../Diary';
+import Diary, { loadDiary } from '../Diary';
 import { loadPubkey } from '../Wallet';
 
 interface Props { }
@@ -31,6 +31,7 @@ class ConnectionsScreen extends React.Component<Props, State>{
   componentDidMount() {
     loadPubkey(this);
     loadConnections(this);
+    loadDiary(this);
   }
 
   onConnection(connection: Connection) {

@@ -5,7 +5,7 @@ import {
 } from 'react-native';
 import Connection from '../Connection';
 import Connections, { loadConnections, saveConnections } from '../Connections';
-import Diary from '../Diary';
+import Diary, {loadDiary, saveDiary } from '../Diary';
 import DiaryEntry from '../DiaryEntry';
 import DiaryView from '../components/DiaryView';
 import Nearby from '../components/Nearby';
@@ -31,11 +31,13 @@ class DiaryScreen extends React.Component<Props, State>{
   componentDidMount() {
     loadPubkey(this);
     loadConnections(this);
+    loadDiary(this);
   }
 
   onNewDiaryEntry(entry: DiaryEntry) {
     const { diary } = this.state;
     diary.addEntry(entry);
+    saveDiary(diary);
     this.setState({ diary });
   }
 

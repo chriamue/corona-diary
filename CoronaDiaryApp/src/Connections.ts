@@ -12,7 +12,6 @@ export async function loadConnections(component: React.Component) {
             const connections: Connections = fromJson(data);
             return connections;
         });
-        console.log(connections);
         component.setState({ connections });
     } catch (e) {
         console.log(e);
