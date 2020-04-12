@@ -24,7 +24,7 @@ class ChartsScreen extends React.Component<Props, State>{
 
   componentDidMount() {
     loadPubkey(this);
-    loadConnections(this);
+    loadConnections().then((connections) => { if (connections) this.setState({ connections }) });
   }
 
   render() {

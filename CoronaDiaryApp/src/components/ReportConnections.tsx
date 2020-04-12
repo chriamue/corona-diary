@@ -6,7 +6,7 @@ import { Button } from 'react-native-elements';
 import { CORONA_DIARY_SERVER } from 'react-native-dotenv';
 import { Wallet } from '../Wallet';
 import Connection from '../Connection';
-import Connections from '../Connections';
+import Connections, { loadConnections } from '../Connections';
 import Diary from '../Diary';
 import DiaryEntry from '../DiaryEntry';
 
@@ -105,15 +105,17 @@ export default class ReportConnections extends React.Component<Props, State> {
 
     }
 
-    informConnections() {
-        const { connections, diary } = this.props;
+    async informConnections() {
+        const { diary } = this.props;
+
+        const connections = await loadConnections();
         if (!connections || !diary) {
             return;
         }
-        for( const entry of diary.entries){
-                    for (const connection of connections.connections) {
-            this.informConnection(connection, entry);
-        }
+        for (const entry of diary.entries) {
+            for (const connection of connections.connections) {
+                this.informConnection(connection, entry);
+            }
         }
 
     }

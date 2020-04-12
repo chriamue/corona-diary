@@ -5,8 +5,9 @@ import {
 import { Text, Rating } from 'react-native-elements';
 import * as Progress from 'react-native-progress';
 
-import { Icon, Badge, Button, ThemeProvider } from 'react-native-elements';
-
+import { Icon, Badge } from 'react-native-elements';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
+import { faLungsVirus, faWalking, faHeadSideCough, faThermometerThreeQuarters, faTemperatureHigh } from '@fortawesome/free-solid-svg-icons'
 
 interface Props {
     connection: any
@@ -46,24 +47,13 @@ export default class ConnectionView extends React.Component<Props, State> {
         try {
             return symptoms.map((symptom) => {
                 if (symptom == 'FEVER') {
-                    return <Icon
-                        name='thermometer-full'
-                        type='font-awesome'
-                    />
+                    return <FontAwesomeIcon icon={ faThermometerThreeQuarters }/>
                 } else if (symptom == 'COUGH') {
-                    return <Icon
-                        name='head-side-cough'
-                        type='font-awesome'
-                    />
+                    return <FontAwesomeIcon icon={ faHeadSideCough }/>
                 } else if (symptom == 'BREATH') {
-                    return <Icon
-                        name='lungs-virus'
-                        type='font-awesome'
-                    />
+                    return <FontAwesomeIcon icon={ faLungsVirus }/>
                 } else {
-                    return <Icon
-                        name='walking'
-                        type='font-awesome' />;
+                    return <FontAwesomeIcon icon={ faWalking }/>
                 }
             })
         } catch (e) {

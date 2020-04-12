@@ -10,7 +10,9 @@ export default class DiaryStats {
     getWellbeingTimeSeries() {
         const x = [];
         const y = [];
-        for (const entry of this.diary.entries) {
+        
+
+        for (const entry of this.diary.sortedEntries()) {
             x.push(entry.timestamp);
             y.push(entry.wellbeing);
         }

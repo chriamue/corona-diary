@@ -74,6 +74,7 @@ export default class DiaryView extends React.Component<Props, State> {
         return (<Plotly
             data={[data]}
             layout={layout}
+            config={{displayModeBar: false}}
         />)
     }
 
@@ -92,11 +93,9 @@ export default class DiaryView extends React.Component<Props, State> {
 
                 <Rating
                     type='heart'
-                    //reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
                     startingValue={rating}
                     ratingCount={5}
                     imageSize={40}
-                    //showRating
                     onFinishRating={(rating) => this.ratingCompleted(rating)}
                 />
                 <ScrollView horizontal>

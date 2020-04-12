@@ -3,7 +3,7 @@ import {
   ScrollView,
   Text
 } from 'react-native';
-import Diary, {loadDiary, saveDiary } from '../Diary';
+import Diary, { loadDiary, saveDiary } from '../Diary';
 import DiaryEntry from '../DiaryEntry';
 import DiaryView from '../components/DiaryView';
 import { loadPubkey } from '../Wallet';
@@ -25,7 +25,7 @@ class DiaryScreen extends React.Component<Props, State>{
 
   componentDidMount() {
     loadPubkey(this);
-    loadDiary(this);
+    loadDiary().then((diary) => { if (diary) this.setState({ diary }) });
   }
 
   onNewDiaryEntry(entry: DiaryEntry) {

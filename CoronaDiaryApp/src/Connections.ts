@@ -3,7 +3,7 @@ import moment from 'moment';
 import AsyncStorage from '@react-native-community/async-storage';
 import Connection from './Connection';
 
-export async function loadConnections(component: React.Component) {
+export async function loadConnections() {
     try {
         const connections: Connections = await AsyncStorage.getItem('@connections').then((data) => {
             if (data == null) {
@@ -12,7 +12,7 @@ export async function loadConnections(component: React.Component) {
             const connections: Connections = fromJson(data);
             return connections;
         });
-        component.setState({ connections });
+        return connections;
     } catch (e) {
         console.log(e);
     }

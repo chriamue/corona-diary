@@ -28,8 +28,8 @@ class ConnectionsScreen extends React.Component<Props, State>{
 
   componentDidMount() {
     loadPubkey(this);
-    loadConnections(this);
-    loadDiary(this);
+    loadConnections().then((connections) => { if (connections) this.setState({ connections }) });
+    loadDiary().then((diary) => { if (diary) this.setState({ diary }) });
   }
 
   render() {

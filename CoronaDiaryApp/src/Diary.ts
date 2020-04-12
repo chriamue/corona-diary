@@ -2,7 +2,7 @@ import { List } from 'immutable';
 import AsyncStorage from '@react-native-community/async-storage';
 import DiaryEntry from './DiaryEntry';
 
-export async function loadDiary(component: React.Component) {
+export async function loadDiary() {
     try {
         const diary: Diary = await AsyncStorage.getItem('@diary').then((data) => {
             if (data == null) {
@@ -11,7 +11,7 @@ export async function loadDiary(component: React.Component) {
             const diary: Diary = fromJson(data);
             return diary;
         });
-        component.setState({ diary });
+        return diary;
     } catch (e) {
         console.log(e);
     }
@@ -55,5 +55,20 @@ export default class Diary {
 
     toJson(): string {
         return JSON.stringify(this);
+    }
+
+    sortedEntries() {
+        let entries = this.entries;
+        entries = entries.sort((a, b) => {
+            if (a.timestamp > b.timestamp) {
+                return 1;
+            }
+            if (a.timestamp < b.timestamp) {
+                return -1;
+            }
+
+            return 0;
+        });
+        return entries;
     }
 }
