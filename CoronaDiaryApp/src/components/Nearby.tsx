@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text } from 'react-native';
+import { Badge, Tooltip, Text } from 'react-native-elements'
 import { NearbyAPI } from "@adrianso/react-native-nearby-api";
 import { NEARBY_API_KEY } from 'react-native-dotenv'
 import Connection from '../Connection';
@@ -118,8 +118,17 @@ export default class Nearby extends React.Component<Props, State> {
     render() {
         const { nearbyConnected } = this.state;
         const connectionStats = new ConnectionStats(this.state.connections);
+        if (!nearbyConnected) {
+            return (
+                <Tooltip popover={<Text onPress={() => this.newConnection()} >{connectionStats.countLast5Min()} Nearby Service not working.</Text>}>
+                    <Badge status="error" value={connectionStats.countLast5Min()} />
+                </Tooltip>
+            )
+        }
         return (
-            <Text onPress={() => this.newConnection()}>{connectionStats.countLast5Min()} Nearby {nearbyConnected ? "[C]" : null}</Text>
+            <Tooltip popover={<Text onPress={() => this.newConnection()} >{connectionStats.countLast5Min()} Nearby Devices</Text>}>
+                <Badge status="success" value={connectionStats.countLast5Min()} />
+            </Tooltip>
         )
     }
 }
