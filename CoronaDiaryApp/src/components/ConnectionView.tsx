@@ -72,7 +72,7 @@ export default class ConnectionView extends React.Component<Props, State> {
     }
 
     renderWellbeingExpanded(wellbeing: number) {
-        return Array.from({ length: wellbeing }, (_, index) => <Icon key={index} name='heart' type='font-awesome' />)
+        return Array.from({ length: wellbeing }, (_, index) => <Icon key={`heart-${index}`} name='heart' type='font-awesome' />)
     }
 
     renderWellbeing(wellbeing: number) {
