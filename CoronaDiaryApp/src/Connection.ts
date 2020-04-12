@@ -14,7 +14,6 @@ export default class Connection {
     accumulate(other: Connection, duration: moment.Duration): Connection | null {
         if (this.pubkey == other.pubkey && this.start < other.start && moment(this.end).add(duration).toDate() > other.start) {
             this.end = other.end;
-            console.log(this.pubkey, this.start, other.end)
             return this
         }
         return null;

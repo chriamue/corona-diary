@@ -7,6 +7,8 @@ import Diary from '../Diary';
 import { Button, Rating } from 'react-native-elements';
 import MultiSelect from 'react-native-multiple-select';
 import DiaryEntry from '../DiaryEntry';
+import DiaryStats from '../DiaryStats';
+import Plotly from 'react-native-plotly';
 
 
 interface Props {
@@ -60,6 +62,21 @@ export default class DiaryView extends React.Component<Props, State> {
         return options;
     }
 
+    renderStats() {
+        const diaryStats = new DiaryStats(this.props.diary);
+        const diaryData = diaryStats.getWellbeingTimeSeries();
+        const data = {
+            x: diaryData.x,
+            y: diaryData.y,
+            type: 'scatter',
+        };
+        const layout = { title: 'My Wellbeing!' };
+        return (<Plotly
+            data={[data]}
+            layout={layout}
+        />)
+    }
+
     render() {
         const { diary } = this.props;
         const { date, rating, symptoms } = this.state
@@ -67,7 +84,12 @@ export default class DiaryView extends React.Component<Props, State> {
             return null;
         }
         return (<>
+            <View style={{ height: 250 }}>
+                {this.renderStats()}
+            </View>
+
             <View>
+
                 <Rating
                     type='heart'
                     //reviews={["Terrible", "Bad", "OK", "Good", "Very Good"]}
