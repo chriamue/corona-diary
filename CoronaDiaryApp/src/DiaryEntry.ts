@@ -1,4 +1,3 @@
-import moment from 'moment';
 
 export function fromJson(json: any){
     const entry = new DiaryEntry(json.wellbeing, json.timestamp);

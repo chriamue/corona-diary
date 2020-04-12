@@ -5,9 +5,7 @@ import {
 } from 'react-native';
 import ConnectionReports from '../components/ConnectionReports';
 import ReportConnections from '../components/ReportConnections';
-import Nearby from '../components/Nearby';
-import Connection from '../Connection';
-import Connections, { loadConnections, saveConnections } from '../Connections';
+import Connections, { loadConnections } from '../Connections';
 import Diary, { loadDiary } from '../Diary';
 import { loadPubkey } from '../Wallet';
 
@@ -34,13 +32,6 @@ class ConnectionsScreen extends React.Component<Props, State>{
     loadDiary(this);
   }
 
-  onConnection(connection: Connection) {
-    let { connections } = this.state;
-    connections = connections.add(connection)
-    saveConnections(connections);
-    this.setState({ connections });
-  }
-
   render() {
     if (!this.state.pubkey) {
       return null;
@@ -50,7 +41,6 @@ class ConnectionsScreen extends React.Component<Props, State>{
         <Text>Connections</Text>
         <ConnectionReports />
         <ReportConnections connections={this.state.connections} diary={this.state.diary} />
-        <Nearby pubkey={this.state.pubkey} connections={this.state.connections} onConnection={(connection: Connection) => this.onConnection(connection)} />
       </View>
     );
   }
