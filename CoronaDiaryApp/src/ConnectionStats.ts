@@ -14,6 +14,7 @@ export default class ConnectionStats {
         let count = 0;
         const now = Date.now();
         for (const connection of this.connections.connections) {
+            console.log(typeof(connection), connection)
             if (connection.end.getTime() > now - 1000 * 60 * 5) {
                 count += 1;
             }

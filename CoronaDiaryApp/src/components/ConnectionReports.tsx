@@ -85,10 +85,6 @@ export default class ConnectionReports extends React.Component<Props, State> {
             });
     }
 
-
-
-
-
     render() {
         const { connections, wallet } = this.state;
         if (!wallet) {

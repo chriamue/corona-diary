@@ -3,13 +3,13 @@ import {
   View,
   Text
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import ConnectionReports from '../components/ConnectionReports';
 import ReportConnections from '../components/ReportConnections';
 import Nearby from '../components/Nearby';
 import Connection from '../Connection';
-import Connections from '../Connections';
+import Connections, { loadConnections, saveConnections } from '../Connections';
 import Diary from '../Diary';
+import { loadPubkey } from '../Wallet';
 
 interface Props { }
 interface State {
@@ -29,21 +29,14 @@ class ConnectionsScreen extends React.Component<Props, State>{
   }
 
   componentDidMount() {
-    this.loadPubkey();
-  }
-
-  async loadPubkey() {
-    try {
-      const pubkey = await AsyncStorage.getItem('@pubkey')
-      this.setState({ pubkey });
-    } catch (e) {
-      console.log(e);
-    }
+    loadPubkey(this);
+    loadConnections(this);
   }
 
   onConnection(connection: Connection) {
     let { connections } = this.state;
     connections = connections.add(connection)
+    saveConnections(connections);
     this.setState({ connections });
   }
 

@@ -1,5 +1,16 @@
+import React from 'react';
+import AsyncStorage from '@react-native-community/async-storage';
 import { Base64 } from 'js-base64';
 import { RSA } from 'react-native-rsa-native';
+
+export async function loadPubkey(component: React.Component) {
+    try {
+        const pubkey = await AsyncStorage.getItem('@pubkey')
+        component.setState({ pubkey });
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 export class Wallet {
 

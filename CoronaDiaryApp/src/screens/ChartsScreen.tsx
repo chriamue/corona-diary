@@ -3,13 +3,13 @@ import {
   View,
   Text
 } from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage';
 import Connection from '../Connection';
-import Connections from '../Connections';
+import Connections, { loadConnections, saveConnections } from '../Connections';
 import Diary from '../Diary';
 import DiaryEntry from '../DiaryEntry';
 import Charts from '../components/Charts';
 import Nearby from '../components/Nearby';
+import { loadPubkey } from '../Wallet';
 
 interface Props { }
 interface State {
@@ -30,16 +30,8 @@ class ChartsScreen extends React.Component<Props, State>{
   }
 
   componentDidMount() {
-    this.loadPubkey();
-  }
-
-  async loadPubkey() {
-    try {
-      const pubkey = await AsyncStorage.getItem('@pubkey')
-      this.setState({ pubkey });
-    } catch (e) {
-      console.log(e);
-    }
+    loadPubkey(this);
+    loadConnections(this);
   }
 
   onNewDiaryEntry(entry: DiaryEntry) {
@@ -51,6 +43,7 @@ class ChartsScreen extends React.Component<Props, State>{
   onConnection(connection: Connection) {
     let { connections } = this.state;
     connections = connections.add(connection)
+    saveConnections(connections);
     this.setState({ connections });
   }
 
