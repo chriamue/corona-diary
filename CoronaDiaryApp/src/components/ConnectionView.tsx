@@ -34,7 +34,7 @@ export default class ConnectionView extends React.Component<Props, State> {
         try {
             return symptoms.map((symptom) => {
                 if (symptom == 'FEVER') {
-                    return <Badge status="error" />
+                    return <Badge key={`symptom-badge-${symptom}`} status="error" />
                 } else if (symptom == 'COUGH') {
                     return <Badge status="warning" />
                 } else if (symptom == 'BREATH') {
@@ -52,7 +52,7 @@ export default class ConnectionView extends React.Component<Props, State> {
         try {
             return symptoms.map((symptom) => {
                 if (symptom == 'FEVER') {
-                    return <FontAwesomeIcon icon={faThermometerThreeQuarters} />
+                    return <FontAwesomeIcon key={`symptom-${symptom}`} icon={faThermometerThreeQuarters} />
                 } else if (symptom == 'COUGH') {
                     return <FontAwesomeIcon icon={faHeadSideCough} />
                 } else if (symptom == 'BREATH') {
@@ -90,7 +90,7 @@ export default class ConnectionView extends React.Component<Props, State> {
         }
         const stats = new ConnectionMessageStats(connections);
         return <ScrollView horizontal>
-            {this.renderSymptoms(stats.getAllSymptoms(md5PubKey))}
+            {this.renderSymptomsExpanded(stats.getAllSymptoms(md5PubKey))}
         </ScrollView>
     }
 

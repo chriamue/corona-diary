@@ -118,7 +118,6 @@ export default class ConnectionReports extends React.Component<Props, State> {
         const connections = this.state.connections;
         const list = []
         for (const key of connections.messages.keys()) {
-            const connection = connections.messages.get(key);
             list.push(<><ConnectionView key={`connection-view-${key}`} md5PubKey={key} connections={connections} /></>)
         }
         return list;

@@ -86,7 +86,6 @@ export default class Keys extends React.Component<Props, State> {
                 {wallet.getPublicKey()}
             </Text>
                 <Icon name='vpn-key' onPress={() => this.setState({ expand: false })} />
-                <Button title='test login' onPress={() => this.testLogin()} />
                 <Button title='generate key' onPress={() => this.generateWallet()} />
             </>;
         }
