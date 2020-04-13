@@ -1,6 +1,6 @@
 
 export function fromJson(json: any){
-    const entry = new DiaryEntry(json.wellbeing, json.timestamp);
+    const entry = new DiaryEntry(json.wellbeing, new Date(json.timestamp));
     entry.symptoms = json.symptoms;
     return entry;
 }

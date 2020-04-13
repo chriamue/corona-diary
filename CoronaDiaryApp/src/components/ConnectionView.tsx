@@ -1,17 +1,21 @@
 import React from 'react';
 import {
-    ScrollView
+    ScrollView,
+    View
 } from 'react-native';
 import { Text, Rating } from 'react-native-elements';
 import * as Progress from 'react-native-progress';
 
 import { Icon, Badge } from 'react-native-elements';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faLungsVirus, faWalking, faHeadSideCough, faThermometerThreeQuarters } from '@fortawesome/free-solid-svg-icons'
+import { faLungsVirus, faWalking, faHeadSideCough, faThermometerThreeQuarters, faHandshake } from '@fortawesome/free-solid-svg-icons'
 import ConnectionMessage from '../ConnectionMessage';
+import ConnectionMessageStats from '../ConnectionMessageStats';
+import ConnectionMessages from '../ConnectionMessages';
 
 interface Props {
-    connection: ConnectionMessage
+    md5PubKey: string,
+    connections: ConnectionMessages
 }
 interface State {
     expand: boolean
@@ -70,12 +74,34 @@ export default class ConnectionView extends React.Component<Props, State> {
         return <Progress.Pie progress={wellbeing * 1.0 / 5} color='red' size={12} />
     }
 
-    render() {
-        const { connection } = this.props;
+    renderEntry() {
+        const { connections, md5PubKey } = this.props;
         const { expand } = this.state;
-        return <ScrollView horizontal><Text onPress={() => this.setState({ expand: !expand })}>[{connection.timestamp}]</Text>
-            {expand ? this.renderSymptomsExpanded(connection.diaryEntry.symptoms) : this.renderSymptoms(connection.diaryEntry.symptoms)}
-            {expand ? this.renderWellbeingExpanded(connection.diaryEntry.wellbeing) : this.renderWellbeing(connection.diaryEntry.wellbeing)}
+        if (expand) {
+            const messages = connections.messages.get(md5PubKey);
+            return messages?.map((message) => {
+                console.log(message.diaryEntry.symptoms)
+                return <ScrollView horizontal key={`entry-${message.timestamp}`}>
+                    <Text>{message.diaryEntry.timestamp.toString()}</Text>
+                    {this.renderSymptomsExpanded(message.diaryEntry.symptoms)}
+                    {this.renderWellbeingExpanded(message.diaryEntry.wellbeing)}
+                </ScrollView>
+            })
+        }
+        const stats = new ConnectionMessageStats(connections);
+        return <ScrollView horizontal>
+            {this.renderSymptoms(stats.getAllSymptoms(md5PubKey))}
+        </ScrollView>
+    }
+
+    render() {
+        const { connections, md5PubKey } = this.props;
+        const { expand } = this.state;
+        const stats = new ConnectionMessageStats(connections);
+        const timestamp = stats.getLastContact(md5PubKey);
+        return <ScrollView horizontal={!expand}>
+            <FontAwesomeIcon icon={faHandshake} /><Text onPress={() => this.setState({ expand: !expand })}>{timestamp?.toString()}</Text>
+            <View>{this.renderEntry()}</View>
         </ScrollView>
     }
 }

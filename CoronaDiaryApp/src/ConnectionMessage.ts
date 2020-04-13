@@ -3,7 +3,7 @@ import DiaryEntry, { fromJson as diaryEntryFromJson } from './DiaryEntry';
 export function fromJson(json: any) {
     console.log(json)
     const entry = diaryEntryFromJson(json.diaryentry);
-    const message = new ConnectionMessage(json.md5pubkey, json.timestamp, entry);
+    const message = new ConnectionMessage(json.md5pubkey, new Date(json.timestamp), entry);
     return message;
 }
 

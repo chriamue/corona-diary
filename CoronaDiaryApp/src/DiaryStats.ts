@@ -11,7 +11,6 @@ export default class DiaryStats {
         const x = [];
         const y = [];
         
-
         for (const entry of this.diary.sortedEntries()) {
             x.push(entry.timestamp);
             y.push(entry.wellbeing);

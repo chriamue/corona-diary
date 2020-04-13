@@ -9,14 +9,17 @@ import {
     View
 } from 'react-native';
 import { Icon, Button, ThemeProvider } from 'react-native-elements';
+import Plotly from 'react-native-plotly';
 import ConnectionView from './ConnectionView';
 import { fromJson as diaryFromJson } from '../DiaryEntry';
 import { fromJson as connectionMessageFromJson } from '../ConnectionMessage';
+import ConnectionMessageStats from '../ConnectionMessageStats';
+import ConnectionMessages from '../ConnectionMessages';
 
 interface Props { }
 interface State {
     wallet: Wallet | null,
-    connections: any[]
+    connections: ConnectionMessages
 }
 
 export default class ConnectionReports extends React.Component<Props, State> {
@@ -25,7 +28,7 @@ export default class ConnectionReports extends React.Component<Props, State> {
         super(props);
         this.state = {
             wallet: null,
-            connections: []
+            connections: new ConnectionMessages()
         };
     }
 
@@ -65,9 +68,10 @@ export default class ConnectionReports extends React.Component<Props, State> {
 
         console.log(CORONA_DIARY_SERVER)
 
+        const connections = new ConnectionMessages();
+
         fetch(`https://${CORONA_DIARY_SERVER}/api/v1/connections/${pubKeyB64}/${timestampB64}/${signatureB64}`)
             .then(res => res.json()).then(async (body) => {
-                const connections: any[] = []
                 for (const connection of body) {
                     try {
                         let cdata = connection.data
@@ -76,7 +80,7 @@ export default class ConnectionReports extends React.Component<Props, State> {
                             continue;
                         }
                         const message = connectionMessageFromJson(data);
-                        connections.push(message)
+                        connections.add(message)
                     } catch (err) {
                         console.log(err);
                     }
@@ -85,17 +89,54 @@ export default class ConnectionReports extends React.Component<Props, State> {
             });
     }
 
+    renderStats() {
+        const data = []
+        const stats = new ConnectionMessageStats(this.state.connections);
+        for (const md5PubKey of stats.uniqueMd5PubKeys()) {
+            const diaryData = stats.getWellbeingTimeSeries(md5PubKey);
+            data.push({
+                x: diaryData.x,
+                y: diaryData.y,
+                name: md5PubKey,
+                mode: 'lines'
+            });
+        }
+        if (data.length < 1) {
+            return;
+        }
+        const layout = { showlegend: false, title: 'Connections Wellbeing' };
+        return (
+            <View style={{ height: 350, width: 400 }}>
+                <Plotly key={'connections-plot'}
+                    data={data}
+                    layout={layout}
+                    config={{ displayModeBar: false }}
+                />
+            </View>)
+    }
+    renderList() {
+        const connections = this.state.connections;
+        const list = []
+        for (const key of connections.messages.keys()) {
+            const connection = connections.messages.get(key);
+            list.push(<><ConnectionView key={`connection-view-${key}`} md5PubKey={key} connections={connections} /></>)
+        }
+        return list;
+    }
+
     render() {
-        const { connections, wallet } = this.state;
+        const { wallet } = this.state;
         if (!wallet) {
             return null;
         }
 
         return (<>
-            <ScrollView><View>
-                <Button title='load Connections' onPress={() => this.loadConnections()} />
-                {connections.map((connection, index) => <ConnectionView key={`connection-view-${index}`} connection={connection} />)}
-            </View>
+            <ScrollView>
+                {this.renderStats()}
+                <View>
+                    <Button title='load Connections' onPress={() => this.loadConnections()} />
+                    {this.renderList()}
+                </View>
             </ScrollView></>)
     }
 }
