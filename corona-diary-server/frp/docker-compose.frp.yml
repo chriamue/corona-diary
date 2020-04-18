@@ -1,0 +1,26 @@
+version: "3"
+services:
+  frps:
+    image: chriamue/frp:frps
+    environment:
+      - FRP_SERVER_ADDR=${FRP_SERVER_ADDR}
+      - FRP_TOKEN=${FRP_TOKEN}
+      - FRP_SUBDOMAIN=${FRP_SUBDOMAIN}
+    volumes:
+      - ./frp/frps.ini:/etc/frps.ini:ro
+
+  frpc:
+    image: chriamue/frp:frpc
+    depends_on:
+      - frps
+    env_file: .env
+    volumes:
+      - ./frp/frpc.ini:/etc/frpc.ini:ro
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./frp/nginx.conf:/etc/nginx/conf.d/fprs.conf:ro
+    ports:
+      - 8081:80
+      - 8443:443
