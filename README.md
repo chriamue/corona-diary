@@ -138,4 +138,6 @@ so the real identity is still anonym.
 
 ## Related Projects
 
+[Decentralized Privacy-Preserving Proximity Tracing](https://github.com/DP-3T/documents)
+
 [Pan-European Privacy-Preserving Proximity Tracing](https://www.pepp-pt.org/)
