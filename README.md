@@ -140,4 +140,6 @@ so the real identity is still anonym.
 
 [Decentralized Privacy-Preserving Proximity Tracing](https://github.com/DP-3T/documents)
 
+[Privacy Respecting Proximity Tracing](https://github.com/covitrace)
+
 [Pan-European Privacy-Preserving Proximity Tracing](https://www.pepp-pt.org/)
