@@ -27,7 +27,7 @@
   "dependencies": {
     "@types/js-yaml": "^3.12.3",
     "@types/swagger-ui-express": "^4.1.2",
-    "axios": "^0.19.2",
+    "axios": "^0.21.2",
     "body-parser": "^1.19.0",
     "corona-diary": "../corona-diary-js",
     "dotenv": "^8.2.0",
